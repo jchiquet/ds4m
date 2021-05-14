@@ -1,5 +1,5 @@
 name: "Natixis Certificat for Data Science - Dimension Reduction"
-output_dir: "public"
+output_dir: "docs"
 output:
   html_document:
     theme: yeti
