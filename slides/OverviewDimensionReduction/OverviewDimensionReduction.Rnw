@@ -1,0 +1,144 @@
+\documentclass{beamer}
+
+\def\currentCourse{Data Science for Manager Certificat}
+\def\currentInstitute{Julien Chiquet}
+\def\currentLogo{../common_figs/logo_HEC}
+\def\currentDate{Spring 2021}
+\def\currentChapter{Dimensionality Reduction}
+
+<<preamble, child='../common_preamble.Rnw'>>=
+@
+
+\graphicspath{{figures/}}
+
+\begin{document}
+
+\dotitlepage
+
+%% ====================================================================
+\part{Introduction}
+%% ====================================================================
+\begin{frame}[fragile]
+  \partpage
+
+\paragraph{Packages used for data manipulation and representation}
+<<load-packages-general, cache = FALSE, message=FALSE, warning=FALSE>>=
+library(tidyverse)    # opinionated collection of packages for data manipulation
+library(corrplot)     # (correlation) matrix plot
+theme_set(theme_bw())
+@
+\end{frame}
+<<general-motivations, child='general_motivations.Rnw'>>=
+@
+
+%% ====================================================================
+\part{Linear Methods}
+%% ====================================================================
+\begin{frame}[fragile]
+  \partpage
+
+\paragraph{Packages used to perform PCA}
+
+<<load-packages-PCA, cache = FALSE, message=FALSE, warning=FALSE>>=
+library(FactoMineR) # PCA and oter linear method for dimension reduction
+library(factoextra) # fancy plotting for FactoMineR output
+@
+
+
+\end{frame}
+<<pca-intro, child='PCA_intro.Rnw'>>=
+@
+
+%% ==========================================================================
+%% Background: high-school algebra
+%% ==========================================================================
+\input{PCA_background_algebra}
+
+%% ==========================================================================
+%% Geometric point of View
+%% ==========================================================================
+<<pca-geometry, child='PCA_geometry.Rnw'>>=
+@
+
+%% ==========================================================================
+%% Principal axes by variance maximization
+%% ==========================================================================
+<<pca-fitting, child='PCA_fitting.Rnw'>>=
+@
+
+%% ==========================================================================
+%% Representation and interpretation
+%% ==========================================================================
+<<pca-representation, child='PCA_representation.Rnw'>>=
+@
+
+%% ==========================================================================
+%% Complements
+%% ==========================================================================
+<<pca-complements, child='PCA_complements.Rnw'>>=
+@
+
+
+%% ====================================================================
+\part{Non-linear Methods}
+%% ====================================================================
+\begin{frame}[fragile]
+  \partpage
+
+\paragraph{Packages required for reproducing the slides}
+<<load_packages2, cache = FALSE, message=FALSE, warning=FALSE>>=
+library(NMF)        # Non-Negative Matrix factorisation
+library(kernlab)    # Kernel-based methods, among which kernel-PCA
+library(MASS)       # Various statistical tools, including metric MDS
+library(Rtsne)      # tSNE implementation in R 
+library(umap)       # Uniform Manifold Approximation and Projection
+
+theme_set(theme_bw()) # my default theme for ggplot2
+@
+
+\end{frame}
+
+%% ====================================================================
+<<nonlinear-introduction, child='nonlin_intro.Rnw'>>=
+@
+
+\section{Motivated by reconstruction error}
+
+\subsection{PCA as a matrix factorization}
+<<reconstruction-error, child='reconstruction_error_viewpoint.Rnw'>>=
+@
+
+\subsection{Kernel-PCA}
+<<kernel-PCA, child='nonlin_kernelPCA.Rnw'>>=
+@
+
+\subsection{Other directions}
+<<others reconstruction, child='others_reconstruction.Rnw'>>=
+@
+
+%% ==========================================================================
+\section{Motivated by relation preservation}
+%% ==========================================================================
+
+<<Relation preservation, child='relation_preservation_viewpoint.Rnw'>>=
+@
+
+\subsection{Stochastic Neighborhood Embedding}
+<<tSNE, child='tSNE.Rnw'>>=
+@
+
+\subsection{Other methods}
+<<others relation, child='others_relation.Rnw'>>=
+@
+
+\begin{frame}
+  \frametitle{To conclude}
+  
+  \begin{center}
+      You can play online on \href{https://projector.tensorflow.org/}{https://projector.tensorflow.org/}
+  \end{center}
+  
+\end{frame}
+
+\end{document}
+

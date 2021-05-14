@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Julien Chiquet - Élise Dumas" />
+
+
+<title>Tutorial: nonlinear dimensionality reduction methods (t-SNE, UMAP, Isomap, and autoencoders)</title>
+
+<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<script src="resources/hideOutput.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="resources/style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Natixis Certificat for Data Science - Dimension Reduction</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="https://github.com/jchiquet/data_science_HEC">
+    <span class="fas fa-github"></span>
+     
+    github
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="instructions.html">
+    <span class="fas fa-gear"></span>
+     
+    Setup
+  </a>
+</li>
+<li>
+  <a href="OverviewDimensionReduction.pdf">
+    <span class="fas fa-chalkboard-teacher"></span>
+     
+    Slides
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa-laptop"></span>
+     
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tutorial_PCA.html">PCA</a>
+    </li>
+    <li>
+      <a href="tutorial_nonlinear_methods.html">tSNE- UMAP, Auto-encoders</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa-keyboard"></span>
+     
+    Homework
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="homework_PCA.html">Data analysis with PCA</a>
+    </li>
+    <li>
+      <a href="homework_nonlinear_methods.html">MDS, Kernel-PCA</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Tutorial: nonlinear dimensionality reduction methods (t-SNE, UMAP, Isomap, and autoencoders)</h1>
+<h4 class="author">Julien Chiquet - Élise Dumas</h4>
+<h4 class="date">Natixis Certificat for Data Science</h4>
+
+</div>
+
+
+<div id="preliminaries" class="section level2">
+<h2>Preliminaries</h2>
+<div id="package-requirements" class="section level3">
+<h3>Package requirements</h3>
+<p>We start by loading a couple of useful packages. Please install them using install.packages(“name_of_the_pacakge”) if not already done.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)    <span class="co"># advanced data manipulation and vizualisation      </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mnormt)       <span class="co"># Generation of Gaussian distributions</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Rtsne)        <span class="co"># t-SNE </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cluster)      <span class="co"># Tools for clustering</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dimRed)       <span class="co"># Dimensionality reduction package</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(umap)         <span class="co"># UMAP</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)   <span class="co"># Package to mix Python and R code</span></span></code></pre></div>
+</div>
+</div>
+<div id="exercise-1" class="section level2 tabset">
+<h2 class="tabset">Exercise 1</h2>
+<p>This exercise aims at comparing three non-linear dimensionality reduction techniques: t-SNE, Isomap, and UMAP.</p>
+<div id="creation-of-the-dataset" class="section level3">
+<h3>1) Creation of the dataset</h3>
+<p>Let us first create an artificial dataset composed of 1500 samples generated from 3 different multivariate Gaussian distributions (<strong>500 samples each, 10 dimensions</strong>) with <strong>mean</strong> respectively mean1, mean2, mean3 and <strong>covariance</strong> cov (the same for the 3 distributions). Your dataframe must be in a tibble format with colnames <strong>X1, … , X10</strong>. You must also add a column containing the cluster label, i.e. the “number” of the distribution the sample belongs to: 1, 2 or 3. You can use the function rmnorm for the package mnormt. Name your dataset df.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Means of the 3 Gaussian distributions</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mean1 <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mean2 <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">2</span>,<span class="dv">10</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>mean3 <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">3</span>,<span class="dv">10</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Covariance of the 3 Gaussian distributions </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>cov <span class="ot">=</span> <span class="fl">1.5</span><span class="sc">*</span><span class="fu">diag</span>(<span class="dv">10</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Create dataset</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>distr_list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">list</span>(mean1,mean2,mean3), </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                     <span class="cf">function</span>(x){<span class="fu">rmnorm</span>(<span class="at">n =</span> <span class="dv">500</span>, <span class="at">mean =</span> x, <span class="at">varcov =</span> cov)}) </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind,distr_list) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_with</span>(<span class="sc">~</span> <span class="fu">gsub</span>(<span class="st">&quot;V&quot;</span>, <span class="st">&quot;X&quot;</span>, .x)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cluster =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="at">each =</span> <span class="dv">500</span>)))</span></code></pre></div>
+<p>Let us separate the training data <span class="math inline">\(X\)</span> and the true cluster labels <span class="math inline">\(y\)</span> for the rest of the analysis:</p>
+<p>Separate the data <span class="math inline">\(X\)</span> and the true data labels <span class="math inline">\(y\)</span> by running the code below:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> df <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>cluster)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> df <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(cluster)</span></code></pre></div>
+</div>
+<div id="first-dataset-plot" class="section level3">
+<h3>2) First dataset plot</h3>
+<p>Using geom_density, plot the distribution of the data facetted by dimension (X1 to X10) and filled by cluster number.</p>
+<p><strong>Hint</strong>: you can use pivot_longer to ease the use of facet_wrap as we did in Homework 2.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">!</span>cluster, <span class="at">names_to =</span> <span class="st">&quot;dimension&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;x&quot;</span> ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">group =</span> cluster, <span class="at">fill =</span> cluster)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> dimension) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Dimension&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Density&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of the samples according to the cluster number&quot;</span>, </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">&quot;Cluster&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo1_question2-1.png" width="672" /></p>
+</div>
+<div id="t-sne" class="section level3">
+<h3>3) t-SNE</h3>
+<p>This section aims at presenting t-SNE (t-distributed Stochastic Neighbours Embedding). We present briefly the method below but you can learn more about it by reading the original publication by Van der Maaten, Hinton et al. (2008) <a href="https://lvdmaaten.github.io/publications/papers/JMLR_2008.pdf">here</a>. t-SNE is often used to visualize complex data in 2 dimensions. The idea of t-SNE is to embed the data on a small dimension manifold by respecting data closeness: 2 samples “closed” in the original space are “closed” in the low dimension manifold. The similarity between two samples x<sub>i</sub> and x<sub>j</sub> (in this order) <strong>in the original data space</strong> (high dimensional) stands for the probabily that x<sub>i</sub> would pick x<sub>j</sub> at its neighbor under the condition that neighbors are picked in proportion to their probability density under a <strong>Gaussian distribution</strong> centered at x<sub>i</sub>.</p>
+<p>The variances of the assumed Gaussian distributions rely on the choice of hyperparameter <strong>perplexity</strong> (in a complex way, see article for details). You can remember that higher perplexity leads to higher variance. To simplify, one often says that the perplexity of the model is a smooth measure of the correct number of neighbors of each datapoint. It typically takes values between 30 and 50.</p>
+<p>The similarity between the two embeddings of x<sub>i</sub> and x<sub>j</sub> in the lower dimensional manifold, named y<sub>i</sub> and y<sub>j</sub> respectively, stands for the probabily that y<sub>i</sub> would pick y<sub>j</sub> at its neighbor under the condition that neighbors are picked in proportion to their probability density under a <strong>Student t-distribution</strong> with one degree of freedom centered at x<sub>i</sub>.</p>
+<p>t-SNE minimizes, using Gradient Descent, a symmetrized version of the <strong>Kullback-Leibler divergence</strong> between the distributions of similarity in the original data space and in the low dimensional manifold.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Using the function Rtsne from the package Rtsne, compute a projection of the 1500 samples on a manifold of <strong>dimension 2</strong> using default perplexity argument (30).</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tsne <span class="ot">&lt;-</span> <span class="fu">Rtsne</span>(X, <span class="at">dims =</span> <span class="dv">2</span>, <span class="at">perplexity=</span><span class="dv">30</span>, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Plot the 2D projections computed by t-SNE in the previous questions using geom_point. Color the points by their true cluster labels. Comment your results.</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>results_tsne <span class="ot">&lt;-</span> <span class="fu">cbind</span>(tsne<span class="sc">$</span>Y,y)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> results_tsne, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span><span class="st">`</span><span class="at">1</span><span class="st">`</span>, <span class="at">y=</span><span class="st">`</span><span class="at">2</span><span class="st">`</span>, <span class="at">color =</span> cluster)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span><span class="st">&quot;t-SNE results representation&quot;</span>, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;True label&quot;</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>, </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo1_question3b-1.png" width="672" /></p>
+<p>t-SNE seems to create closed embeddings (in terms of Euclidean distance) for data belonging to the same cluster. It is not surprising since t-SNE assumes Gaussian distributions (and the data in each cluster follows such a distribution). The fact that the distributions overlap (see plot of the dataset in the last section) may explain the “errors” made by t-SNE.</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Compute the <strong>Euclidean distance matrix</strong> between all 1500 embedded points in the projected manifold rendered by t-SNE. (The distance matrix should be of dimension 1500x1500). Then, compute the averaged <strong>silhouette coefficient</strong> among all 1500 samples: it measures how close each sample is from other samples of its cluster in comparison to how far it is from samples in other clusters. The silhouette coefficient enables us to assess clustering quality.</li>
+</ol>
+<p><strong>Hint</strong>: you can use the function rdist from package fields to compute the distance matrix and the function silhouette from package cluster to compute the silhouette coefficient.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Compute distance matrix</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> fields<span class="sc">::</span><span class="fu">rdist</span>(tsne<span class="sc">$</span>Y, tsne<span class="sc">$</span>Y, <span class="at">compact =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>si <span class="ot">&lt;-</span> <span class="fu">silhouette</span>(<span class="fu">as.numeric</span>(y<span class="sc">$</span>cluster),dist)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(si)<span class="sc">$</span>avg.width</span></code></pre></div>
+<pre><code>## [1] 0.3076457</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Let us now try to optimize the hyperparameter <strong>perplexity</strong>. Run t-SNE and compute the averaged silhouette coefficient for various values of perplexity between 2 and 300. Plot the results.</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot silhouette coefficients in function of the perplexity</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>get_silhouette_tsne <span class="ot">&lt;-</span> <span class="cf">function</span>(perplexity){</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  tsne <span class="ot">&lt;-</span> <span class="fu">Rtsne</span>(X, <span class="at">dims =</span> <span class="dv">2</span>, <span class="at">perplexity=</span>perplexity, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  dist <span class="ot">&lt;-</span> fields<span class="sc">::</span><span class="fu">rdist</span>(tsne<span class="sc">$</span>Y, tsne<span class="sc">$</span>Y, <span class="at">compact =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  si <span class="ot">&lt;-</span><span class="fu">silhouette</span>(<span class="fu">as.numeric</span>(y<span class="sc">$</span>cluster),dist)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">summary</span>(si)<span class="sc">$</span>avg.width)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>perplexity_to_test <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">30</span>,<span class="dv">40</span>,<span class="dv">50</span>,<span class="dv">75</span>,<span class="dv">100</span>,<span class="dv">150</span>,<span class="dv">200</span>,<span class="dv">300</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>si <span class="ot">&lt;-</span> <span class="fu">sapply</span>(perplexity_to_test, get_silhouette_tsne)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(perplexity_to_test,si)),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> perplexity_to_test, <span class="at">y =</span> si)) <span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> perplexity_to_test) <span class="sc">+</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Perplexity&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Silhouette coefficient&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo1_question3d-1.png" width="672" /></p>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>You should see that the silhouette coefficient increases with the perplexity. It is thus tempting to use the biggest perplexity possible to get the best silhouette coefficient. Why does it yet not lead to the best dimensionality reduction model? Using, the “elbow” method, propose a value for the perplexity coefficient.</li>
+</ol>
+<p>Bigger perplexity leads to better silhouette coefficients on the training data. Yet, bigger perplexity implies a higher variance of the model, meaning that it suits the training data too much and may not be reproducible. Indeed, it may be very sensitive to noise for instance. This corresponds to the concept of overfitting thoroughly described in supervised Machine Learning. The elbow method advocates to set the hyperparameters to the value leading to an elbow in the curve, <em>i.e.</em> after which the curve does not increase much anymore.</p>
+<p>In the experiment above we may set the perplexity to a value of 40. Note that t-SNE being a stochastic algorithm, we should run the experiment several times and average the results to have a better estimate of the best value of perplexity.</p>
+</div>
+<div id="isomap" class="section level3">
+<h3>4) Isomap</h3>
+<p>This section aims at experimenting Isomap method for dimensionality reduction. It is an extension of MDS (MultiDimensional scaling) for geodesic distance. Indeed, points are projected on a <strong>neighborhood graph</strong> with connections between each point and its K nearest neighbors (in terms of Euclidean distance). Each edge is weighted by the euclidean distance between the two nodes. The geodesic distance between two points is then computed as the sum of the weights of the edges in the <strong>shortest path</strong> linking the two points (which may be computed with Dijkstra’s algorithm for instance). Isomap then computes the eigenvectors and eigenvalues of the geodesic distance matrix. The embeddings stand for the eigenvectors of the biggest eigenvalues.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Using the function <strong>embed</strong> from the package dimRed, compute the projections of the samples on a 2-dimensional manifold using isomap. Plot the results colored by true cluster belongings as you did for t-SNE.</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>isomap_emb <span class="ot">&lt;-</span> dimRed<span class="sc">::</span><span class="fu">embed</span>(X, <span class="st">&quot;Isomap&quot;</span>, <span class="at">.mute =</span> <span class="cn">NULL</span>, <span class="at">knn =</span> <span class="dv">10</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>data_to_plot <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(isomap_emb<span class="sc">@</span>data<span class="sc">@</span>data,y))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_to_plot, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span><span class="st">`</span><span class="at">iso 1</span><span class="st">`</span>, <span class="at">y=</span><span class="st">`</span><span class="at">iso 2</span><span class="st">`</span>, <span class="at">color =</span> cluster)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span><span class="st">&quot;Isomap results representation&quot;</span>, </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;True label&quot;</span>, </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>, </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo1_question4a-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>As you did for t-SNE, compute the silhouette coefficients of the isomap algorithm for a few values of K (number of neighbors considered in the neghborhood graph) coming from 5 to 100. Plot the results and decide on a good value of K for your database.</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>get_silhouette_isomap <span class="ot">&lt;-</span> <span class="cf">function</span>(knn){</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  isomap_emb <span class="ot">&lt;-</span> dimRed<span class="sc">::</span><span class="fu">embed</span>(X, <span class="st">&quot;Isomap&quot;</span>, <span class="at">.mute =</span> <span class="cn">NULL</span>, <span class="at">knn =</span> knn)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  data_embedded <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(isomap_emb<span class="sc">@</span>data<span class="sc">@</span>data)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  dist <span class="ot">&lt;-</span> fields<span class="sc">::</span><span class="fu">rdist</span>(data_embedded, data_embedded,<span class="at">compact =</span> T)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  si <span class="ot">&lt;-</span><span class="fu">silhouette</span>(<span class="fu">as.numeric</span>(y<span class="sc">$</span>cluster),dist)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">summary</span>(si)<span class="sc">$</span>avg.width)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>knn_to_test <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">25</span>,<span class="dv">30</span>,<span class="dv">40</span>,<span class="dv">50</span>,<span class="dv">75</span>,<span class="dv">100</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>si <span class="ot">&lt;-</span> <span class="fu">sapply</span>(knn_to_test, get_silhouette_isomap)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(knn_to_test,si)),</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> knn_to_test, <span class="at">y =</span> si)) <span class="sc">+</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> knn_to_test) <span class="sc">+</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Number of nearest neighbors in graph&quot;</span>, </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Silhouette coefficient&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo1_question4b-1.png" width="672" /></p>
+<p>Here both small and high values of number of neighbors lead to poorer sihlouette coefficients. A number of nearest neighbors ebetween 15 and 25 seems to be a good trade-off. (The result varies a lot with the instance of the dataset).</p>
+</div>
+<div id="umap" class="section level3">
+<h3>5) UMAP</h3>
+<p>Let us have a look at a third and last method: UMAP (Uniform Manifold Approximation and Projection). UMAP assumes that data is uniformly distributed on Riemannian manifolds. It learns a lower-dimensional manifold which retains the topological structure of the Riemannian manifolds of the original data. See <a href="https://arxiv.org/pdf/1802.03426.pdf">this publication</a> for more details.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Using the function <strong>umap</strong> from the package umap, compute the projections of the samples on a 2-dimensional manifold using UMAP. You can keep the default hyperparameter values. Plot the results colored by true cluster belongings as you did for t-SNE and Isomap.</li>
+</ol>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_umap <span class="ot">=</span> <span class="fu">umap</span>(X)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data_to_plot <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(df_umap<span class="sc">$</span>layout,y))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_to_plot, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span><span class="st">`</span><span class="at">1</span><span class="st">`</span>, <span class="at">y=</span><span class="st">`</span><span class="at">2</span><span class="st">`</span>, <span class="at">color =</span> cluster)) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span><span class="st">&quot;UMAP results representation&quot;</span>, </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;True label&quot;</span>, </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo1_question5a-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>UMAP takes as argument several hyper-parameters. Among them is the number of neighbors K to consider. This parameter controls how UMAP balances local versus global structure in the data. It does this by constraining the size of the local neighborhood UMAP will look at when attempting to learn the manifold structure of the data. As you did for t-SNE and Isomap, compute the silhouette coefficient of the UMAP algorithm results for a few values of K coming from 5 to 100. Plot the results and decide on a good value for K for your database.</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>get_silhouette_umap <span class="ot">&lt;-</span> <span class="cf">function</span>(K){</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  custom.config <span class="ot">=</span> umap.defaults</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  custom.config<span class="sc">$</span>n_neighbors <span class="ot">=</span> K</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  df_umap <span class="ot">=</span> <span class="fu">umap</span>(X,custom.config)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  dist <span class="ot">&lt;-</span> fields<span class="sc">::</span><span class="fu">rdist</span>(df_umap<span class="sc">$</span>layout, df_umap<span class="sc">$</span>layout,<span class="at">compact =</span> T)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  si <span class="ot">&lt;-</span><span class="fu">silhouette</span>(<span class="fu">as.numeric</span>(y<span class="sc">$</span>cluster),dist)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">summary</span>(si)<span class="sc">$</span>avg.width)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>knn_to_test <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">25</span>,<span class="dv">30</span>,<span class="dv">40</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">75</span>,<span class="dv">100</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>si <span class="ot">&lt;-</span> <span class="fu">sapply</span>(knn_to_test, get_silhouette_umap)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(knn_to_test,si)),</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> knn_to_test, <span class="at">y =</span> si)) <span class="sc">+</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> knn_to_test) <span class="sc">+</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Number of nearest neighbors in graph&quot;</span>, </span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Silhouette coefficient&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo1_question5b-1.png" width="672" /></p>
+<p>We can use the “elbow method” to determine a good value for K. Here 25 seems to be a good trade-off between high silhouette coefficient and “few” overfitting.</p>
+<p>Note that isomap is a stochastic algorithm, meaning that it does not return exactly the same results when launched twice on the same dataset. You can set a seed in the config parameters to cope with this issue. When choosing the hyperparameters, it is highly recommended to run the algorithm several times and to average the results. (<strong>Do not do it for this homework: this will be too long to run</strong>).</p>
+</div>
+<div id="comparison-of-computation-time" class="section level3">
+<h3>6) Comparison of computation time</h3>
+<p>Finally, compute the computation time (using Sys.time() for instance) for each of the 3 methods (t-SNE, Isomap, and UMAP) for different data sizes (from 300 to 1500, each with step 300).</p>
+<p>To test different data sizes, you can sample a given number of rows of your dataset with <strong>stratification</strong> on the true cluster label (this means that you should sample the same number of samples from clusters 1, 2, and 3). Then, plot the computation time with respect to the data size for each of the 3 methods using ggplot. You can use the values of the hyperparameters (perplexity and K) you have found as being the best suited to your data in the last questions. Briefly comment on the results.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>get_times <span class="ot">&lt;-</span> <span class="cf">function</span>(n){</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Sample with stratification</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  df_n <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample_n</span>(n) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  X_n <span class="ot">=</span> df_n <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>cluster)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  Y_n <span class="ot">=</span> df_n <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(cluster)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#t_SNE</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  start_tsne <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  tsne <span class="ot">&lt;-</span> <span class="fu">Rtsne</span>(X_n, <span class="at">dims =</span> <span class="dv">2</span>, <span class="at">perplexity=</span> <span class="dv">50</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  end_tsne <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Isomap</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  start_isomap <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  isomap <span class="ot">&lt;-</span> dimRed<span class="sc">::</span><span class="fu">embed</span>(X_n, <span class="st">&quot;Isomap&quot;</span>, <span class="at">.mute =</span> <span class="cn">NULL</span>, <span class="at">knn =</span> <span class="dv">15</span>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  end_isomap <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#UMAP</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  custom.config <span class="ot">=</span> umap.defaults</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  custom.config<span class="sc">$</span>n_neighbors <span class="ot">=</span> <span class="dv">25</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  start_umap <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  df_umap <span class="ot">=</span> <span class="fu">umap</span>(X_n,custom.config)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  end_umap <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">tsne =</span> <span class="fu">as.numeric</span>(end_tsne <span class="sc">-</span> start_tsne),</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">isomap =</span> <span class="fu">as.numeric</span>(end_isomap <span class="sc">-</span> start_isomap),</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">umap =</span> <span class="fu">as.numeric</span>(end_umap <span class="sc">-</span> start_umap)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>n_to_test <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">200</span>,<span class="dv">300</span>,<span class="dv">400</span>,<span class="dv">500</span>)</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">sapply</span>(n_to_test,get_times)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(times) <span class="ot">=</span> n_to_test</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>times <span class="sc">%&gt;%</span> </span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">&quot;method&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="sc">-</span>method),as.numeric) <span class="sc">%&gt;%</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">!</span>method,</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;n&quot;</span>,</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;time&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_sample =</span> <span class="dv">3</span><span class="sc">*</span><span class="fu">as.numeric</span>(n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> n_sample,</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y=</span> time, </span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>                       <span class="at">group =</span> method, </span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>                       <span class="at">color =</span> method)) <span class="sc">+</span></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Computation time in fonction of the method and the number of samples&quot;</span>,</span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Artificial dataset generated from 3 Gaussian distriubtions&quot;</span>,</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Number of samples&quot;</span>,</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Computation time (in sec)&quot;</span>,</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;Method&quot;</span>) <span class="sc">+</span></span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo1_question6a-1.png" width="672" /></p>
+<p>The implementation of t-SNE and UMAP we have used does not scale well for large datasets compared with Isomap.</p>
+</div>
+</div>
+<div id="exercise-2" class="section level2 tabset">
+<h2 class="tabset">Exercise 2</h2>
+<p>This exercise focuses on Auto-Encoders (AEs) which are a special type of Neural Networks used for dimensionality reduction. Auto-encoders are neural networks trained to learn a copy of the input.</p>
+<p>It is composed of two parts: <strong>an encoder and a decoder</strong>. The input is first encoded by the encoder, then decoded by the decoder. The output of the <strong>encoder</strong> stands for the data embeddings. The output of the <strong>decoder</strong> has the same dimension as the input since the ultimate goal of the AE is to copy the input into the output of the decoder. See the figure below for an illustration.</p>
+<center>
+<img src="resources/auto_encoder1.png" title="fig:" style="width:60.0%" alt="Schema of a theoretical AutoEncoder" />
+</center>
+<p>The encoder and the decoder are composed of layers which are the concatenation of linear layers and non-linear activation function. The weights of the linear layers are trained through backpropagation and gradient descent.</p>
+<p>You can read more on AutoEncoders <a href="https://www.deeplearningbook.org/contents/autoencoders.html">here</a>. Indeed, if you are not familiar with neural networks at all, this <a href="https://www.deeplearningbook.org">book</a> written by Goodfellow, Bengio, Courville et al. is the perfect read for you. Note that you do not need to know more about Auto-Encoders and Neural Networks to go through this exercise.</p>
+<div id="import-and-plot-data" class="section level3">
+<h3>1) Import and plot data</h3>
+<p>We will work on a <strong>sampled</strong> version of the <a href="http://yann.lecun.com/exdb/mnist/">MNIST</a> dataset: 10,000 labeled handwritten digits from 0 to 9.</p>
+<p>Please load the sampled dataset by running the code below. X is the matrix of images. The images are composed of 28x28 pixels in greyscale color, meaning that the value of each pixel varies from 0 (white) to 255 (black). There are 10 labels standing for the digit represented in each image. You should see that the classes are roughly balanced with around 1000 samples per class.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/images_mnist_10K.csv&quot;</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/labels_mnist_10K.csv&quot;</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Write a code (you can reuse your work from Homework 3) to plot the 12 first images of the dataset on a grid (3 rows of 4 images).</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a function to reshape each image as a matrix and rotate it </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>matrix.rotate <span class="ot">&lt;-</span> <span class="cf">function</span>(img) { </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    img <span class="ot">&lt;-</span> <span class="fu">matrix</span>(img, <span class="at">nrow=</span>28L, <span class="at">byrow=</span>T)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    mat <span class="ot">&lt;-</span> <span class="fu">apply</span>(img, <span class="at">MARGIN =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">FUN =</span> as.numeric)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">t</span>(<span class="fu">apply</span>(mat, <span class="dv">2</span>, rev))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Print the 12 first digits</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)) <span class="co"># Set plot margins</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))   <span class="co"># Set a grid : 3 rows and 4 columns </span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (idx <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) {</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    label <span class="ot">&lt;-</span> y[idx, ]</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">image</span>(<span class="fu">matrix.rotate</span>(X[idx, ]),</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">col =</span> <span class="fu">grey</span>(<span class="at">level =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="at">by=</span><span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">255</span>)), </span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">axes=</span>F, </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">main=</span>label)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo2_question1a-1.png" width="672" /></p>
+</div>
+<div id="define-the-auto-encoder-model" class="section level3">
+<h3>2) Define the auto-encoder model</h3>
+<p>We are going to use Pytorch, which is a Python module, to create an AutoEncoder network and train it in our digits.</p>
+<p>We will use the R library “reticulate” to articulate Python and R code. We will typically train the AutoEncoder model in Python and then analyze and plot results in R. You should have already set your environment for reticulate during the “TD”.</p>
+<p>Please modify the following code in accordance with your configuration and run it.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">use_virtualenv</span>(<span class="st">&quot;r-reticulate&quot;</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">py_config</span>()</span></code></pre></div>
+<pre><code>## python:         /home/jchiquet/.local/share/r-miniconda/envs/r-reticulate/bin/python
+## libpython:      /home/jchiquet/.local/share/r-miniconda/envs/r-reticulate/lib/libpython3.6m.so
+## pythonhome:     /home/jchiquet/.local/share/r-miniconda/envs/r-reticulate:/home/jchiquet/.local/share/r-miniconda/envs/r-reticulate
+## version:        3.6.11 | packaged by conda-forge | (default, Aug  5 2020, 20:09:42)  [GCC 7.5.0]
+## numpy:          /home/jchiquet/.local/share/r-miniconda/envs/r-reticulate/lib/python3.6/site-packages/numpy
+## numpy_version:  1.19.1</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># py_install(&quot;pytorch&quot;   , pip=TRUE) # you need to install package pytorch first time</span></span></code></pre></div>
+<p>Then load the python modules we are going to use. Please install them locally before if you have not done it already. You can use “pip install name_module” in your terminal for instance.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn.model_selection <span class="im">as</span> sk</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code></pre></div>
+<p>Let us now define the AutoEncoder model. In Pytorch, a model is defined as a class inheriting from nn.Module(). You should at least define an init function which sets the parameters and the network layers and a forward function which corresponds to a forward pass into the network (encoder + decoder).</p>
+For this exercise, we will stick to an auto-encoder with one hidden layer (see Figure below). It takes three arguments: <strong>the input shape, the hiden shape and the embedding shape</strong>. Each layer is followed by <a href="https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html">ReLU</a> which is a common non-linear activation function used for neural networks
+<center>
+<img src="resources/auto_encoder2.png" title="fig:" style="width:60.0%" alt="Schema of an AutoEncoder with one hidden layer" />
+</center>
+<p>Please complete the following code by replacing the TODO with either input_shape, hidden_shape or embedding_shape.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AE(nn.Module):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, input_shape, hidden_shape, embedding_shape):</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(AE, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder <span class="op">=</span> nn.Sequential(</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>            nn.Linear(input_shape,hidden_shape),</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            nn.ReLU(<span class="va">True</span>),</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            nn.Linear(hidden_shape,embedding_shape),</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>            nn.ReLU(<span class="va">True</span>))</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.decoder <span class="op">=</span> nn.Sequential(             </span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>            nn.Linear(embedding_shape,hidden_shape),</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>            nn.ReLU(<span class="va">True</span>),</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>            nn.Linear(hidden_shape,input_shape),</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>            nn.ReLU(<span class="va">True</span>))</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>,x):</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.encoder(x)</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.decoder(x)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x</span></code></pre></div>
+<p>Once the AutoEncoder class is defined, we should create an object of this class and pass it the correct dimension of layers. Please create an instance of the class AE named model with <strong>input_shape = 784, hidden_shape = 350 and embedding_shape = 179</strong>.</p>
+<p>We chose to work with Adam optimizer and a learning rate of 0.001. Finally, the criterion (the loss function that will be minimized) is Mean Squared Error: we will try to minimize the difference between the input and the reconstructed input.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a model from `Autoencoder` class</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AE(input_shape<span class="op">=</span><span class="dv">784</span>, hidden_shape <span class="op">=</span> <span class="dv">350</span>, embedding_shape <span class="op">=</span> <span class="dv">179</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Adam optimizer with learning rate 1e-3</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean-squared error loss</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>criterion <span class="op">=</span> nn.MSELoss()</span></code></pre></div>
+<p>Let us now work on the data: the 10,000 digit samples will be split into a train, a validation and a test set. The train set is used to train the network. The validation set enables us to set the hyperparameters for training. The test set is used to assess the model trained on the train set with the set of best hyperparameters found with the validation set. We use the function train_test_split from sklearn to split the train, validation, and test set. This is a two-step procedure: 1) Split test and train + validation and 2) Split train + validation into train and validation. <strong>Please uncomment the following code and fill the argument test_size on the chunck below so that: 60% of 10,000 samples are in train set, 20% are in the validation set, 20% are in the test set.</strong></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>X_train_val, X_test, y_train_val, y_test <span class="op">=</span>  sk.train_test_split(np.array(r.X), np.array(r.y[<span class="st">&#39;V1&#39;</span>]), test_size<span class="op">=</span> <span class="fl">0.2</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">#X_train_val, X_test, y_train_val, y_test = sk.train_test_split(r.X, r.y, test_size=0.2)</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>X_train, X_val, y_train, y_val <span class="op">=</span> sk.train_test_split(X_train_val, y_train_val, test_size<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_train.shape)</span></code></pre></div>
+<pre><code>## (6000, 784)</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_val.shape)</span></code></pre></div>
+<pre><code>## (2000, 784)</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_test.shape)</span></code></pre></div>
+<pre><code>## (2000, 784)</code></pre>
+<p>The model is trained for a given number of epochs. An epoch corresponds to a complete pass through the training set. The training set is divided into batches of fixed size. We chose here batches of size 128. Pytorch provides a class of iterable object DataLoader to automatically create the batches.</p>
+<p>The validation and test set are not split into batches since they are not used for training: we only convert them to Pytorch tensors.</p>
+<p>Please run the code below.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create Dataoader objects with will automaticaly create batches for test and train</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>train_loader <span class="op">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    torch.tensor(X_train).<span class="bu">float</span>(),</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">128</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    shuffle<span class="op">=</span><span class="va">True</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>X_val_torch <span class="op">=</span> torch.tensor(X_val).<span class="bu">float</span>()</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>X_test_torch <span class="op">=</span> torch.tensor(X_test).<span class="bu">float</span>()</span></code></pre></div>
+</div>
+<div id="train-the-model" class="section level3">
+<h3>3) Train the model</h3>
+<p>Let us finally train the model. Choose the number of epochs to run (start low and increase it). The following code loops on the number of epochs and on the train batches. The MSE loss is computed for each batch after a forward pass through the network. The function backward then computes the gradient of the loss with respect to the network parameters. Finally, the network parameters are updated through the optimizer (Adam here).</p>
+<p>The mean training loss averaged on all the batches of the code is stored in a list to be analyzed afterward. <strong>Your task</strong> is to compute the MSE loss <strong>on the validation set</strong> once the training loop on all the batches done. Please uncomment, fill the code below and run it.</p>
+<p><strong>Important</strong>: the goal of this exercise is to discover Auto-Encoders, Pytorch, and reticulate. Please do not spend time on tuning all the hyperparameters. Plus, do not run too many epochs if your computer does not have much calculus power. To give you an idea, a 100 epochs run in less than 1 minute on my computer.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>val_losses  <span class="op">=</span> []</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>train_losses <span class="op">=</span> []</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> batch_features <span class="kw">in</span> train_loader:</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Reset the gradients back to zero</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># PyTorch accumulates gradients on subsequent backward passes</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>        optimizer.zero_grad()</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute reconstructions</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> model(batch_features)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute training reconstruction loss</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>        train_loss <span class="op">=</span> criterion(outputs, batch_features)</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compute accumulated gradients</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>        train_loss.backward()</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Perform parameter update based on current gradients</span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Add the mini-batch training loss to epoch loss</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">+=</span> train_loss.item()</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the mean training loss on epoch</span></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss <span class="op">/</span> <span class="bu">len</span>(train_loader)</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>    train_losses.append(loss)</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute loss on validation set</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>    outputs_val <span class="op">=</span> model(X_val_torch)</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>    val_loss <span class="op">=</span> criterion(outputs_val, X_val_torch)</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the validation loss on epoch</span></span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>    val_losses.append(val_loss.item())</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Display the epoch training loss</span></span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;epoch : </span><span class="sc">{}</span><span class="st">/</span><span class="sc">{}</span><span class="st">, train_loss = </span><span class="sc">{:.6f}</span><span class="st">, val_loss = </span><span class="sc">{:.6f}</span><span class="st">&quot;</span>.<span class="bu">format</span>(epoch <span class="op">+</span> <span class="dv">1</span>, epochs, loss,val_loss))</span></code></pre></div>
+<pre><code>## epoch : 1/200, train_loss = 4043.526466, val_loss = 2773.312012
+## epoch : 2/200, train_loss = 2296.606092, val_loss = 1960.527832
+## epoch : 3/200, train_loss = 1740.082758, val_loss = 1605.319702
+## epoch : 4/200, train_loss = 1481.107058, val_loss = 1419.626465
+## epoch : 5/200, train_loss = 1330.105264, val_loss = 1317.816772
+## epoch : 6/200, train_loss = 1238.428594, val_loss = 1230.847534
+## epoch : 7/200, train_loss = 1166.846485, val_loss = 1180.308228
+## epoch : 8/200, train_loss = 1122.819289, val_loss = 1153.111328
+## epoch : 9/200, train_loss = 1081.106805, val_loss = 1101.184326
+## epoch : 10/200, train_loss = 1054.890273, val_loss = 1085.507080
+## epoch : 11/200, train_loss = 1015.708586, val_loss = 1028.514404
+## epoch : 12/200, train_loss = 978.307829, val_loss = 1026.527588
+## epoch : 13/200, train_loss = 961.389687, val_loss = 987.912659
+## epoch : 14/200, train_loss = 941.601520, val_loss = 975.444519
+## epoch : 15/200, train_loss = 928.402163, val_loss = 974.669006
+## epoch : 16/200, train_loss = 918.543344, val_loss = 950.945129
+## epoch : 17/200, train_loss = 904.368852, val_loss = 934.303833
+## epoch : 18/200, train_loss = 896.061500, val_loss = 934.598267
+## epoch : 19/200, train_loss = 883.166793, val_loss = 916.497070
+## epoch : 20/200, train_loss = 875.009075, val_loss = 913.679443
+## epoch : 21/200, train_loss = 866.133844, val_loss = 899.467834
+## epoch : 22/200, train_loss = 858.400385, val_loss = 900.088135
+## epoch : 23/200, train_loss = 848.843603, val_loss = 889.979675
+## epoch : 24/200, train_loss = 843.880394, val_loss = 884.504822
+## epoch : 25/200, train_loss = 839.112407, val_loss = 880.282776
+## epoch : 26/200, train_loss = 827.536109, val_loss = 867.222595
+## epoch : 27/200, train_loss = 822.178978, val_loss = 865.825195
+## epoch : 28/200, train_loss = 820.408054, val_loss = 864.716248
+## epoch : 29/200, train_loss = 813.586105, val_loss = 861.253723
+## epoch : 30/200, train_loss = 807.134654, val_loss = 861.258423
+## epoch : 31/200, train_loss = 805.874660, val_loss = 851.045776
+## epoch : 32/200, train_loss = 798.695718, val_loss = 846.160400
+## epoch : 33/200, train_loss = 796.699094, val_loss = 836.862061
+## epoch : 34/200, train_loss = 789.498140, val_loss = 833.566040
+## epoch : 35/200, train_loss = 787.739623, val_loss = 832.498718
+## epoch : 36/200, train_loss = 785.067876, val_loss = 827.728027
+## epoch : 37/200, train_loss = 778.924062, val_loss = 825.798096
+## epoch : 38/200, train_loss = 775.837295, val_loss = 829.129333
+## epoch : 39/200, train_loss = 776.194344, val_loss = 821.588562
+## epoch : 40/200, train_loss = 772.138602, val_loss = 817.382019
+## epoch : 41/200, train_loss = 768.595637, val_loss = 816.985474
+## epoch : 42/200, train_loss = 767.614794, val_loss = 810.783508
+## epoch : 43/200, train_loss = 760.387556, val_loss = 807.328003
+## epoch : 44/200, train_loss = 759.161900, val_loss = 805.277405
+## epoch : 45/200, train_loss = 757.679388, val_loss = 801.050354
+## epoch : 46/200, train_loss = 754.386686, val_loss = 802.778137
+## epoch : 47/200, train_loss = 752.321333, val_loss = 798.908752
+## epoch : 48/200, train_loss = 750.169528, val_loss = 796.935181
+## epoch : 49/200, train_loss = 748.946576, val_loss = 791.966064
+## epoch : 50/200, train_loss = 744.657493, val_loss = 795.371155
+## epoch : 51/200, train_loss = 744.024734, val_loss = 790.622131
+## epoch : 52/200, train_loss = 741.972930, val_loss = 786.154541
+## epoch : 53/200, train_loss = 739.636258, val_loss = 793.192810
+## epoch : 54/200, train_loss = 741.003678, val_loss = 797.412964
+## epoch : 55/200, train_loss = 740.601901, val_loss = 788.774292
+## epoch : 56/200, train_loss = 737.026393, val_loss = 779.435730
+## epoch : 57/200, train_loss = 731.070748, val_loss = 785.740906
+## epoch : 58/200, train_loss = 732.342775, val_loss = 782.823120
+## epoch : 59/200, train_loss = 728.756994, val_loss = 773.955994
+## epoch : 60/200, train_loss = 727.310248, val_loss = 777.172241
+## epoch : 61/200, train_loss = 725.154994, val_loss = 776.440247
+## epoch : 62/200, train_loss = 724.690502, val_loss = 772.974121
+## epoch : 63/200, train_loss = 723.167678, val_loss = 777.312744
+## epoch : 64/200, train_loss = 723.390878, val_loss = 773.189941
+## epoch : 65/200, train_loss = 722.235637, val_loss = 768.056030
+## epoch : 66/200, train_loss = 717.779836, val_loss = 769.308411
+## epoch : 67/200, train_loss = 717.360117, val_loss = 766.754028
+## epoch : 68/200, train_loss = 714.020925, val_loss = 764.443237
+## epoch : 69/200, train_loss = 713.800788, val_loss = 762.309204
+## epoch : 70/200, train_loss = 713.436857, val_loss = 766.418518
+## epoch : 71/200, train_loss = 711.747639, val_loss = 761.078369
+## epoch : 72/200, train_loss = 711.492269, val_loss = 761.272217
+## epoch : 73/200, train_loss = 709.324671, val_loss = 763.410950
+## epoch : 74/200, train_loss = 708.161429, val_loss = 758.430847
+## epoch : 75/200, train_loss = 708.374016, val_loss = 762.209656
+## epoch : 76/200, train_loss = 706.369970, val_loss = 751.794922
+## epoch : 77/200, train_loss = 702.615629, val_loss = 766.348633
+## epoch : 78/200, train_loss = 704.702550, val_loss = 756.041138
+## epoch : 79/200, train_loss = 702.400293, val_loss = 752.960022
+## epoch : 80/200, train_loss = 701.703030, val_loss = 750.080078
+## epoch : 81/200, train_loss = 700.937690, val_loss = 752.063293
+## epoch : 82/200, train_loss = 702.130458, val_loss = 752.087402
+## epoch : 83/200, train_loss = 700.870433, val_loss = 747.262756
+## epoch : 84/200, train_loss = 698.127528, val_loss = 750.525940
+## epoch : 85/200, train_loss = 696.528689, val_loss = 745.802368
+## epoch : 86/200, train_loss = 697.023662, val_loss = 747.150208
+## epoch : 87/200, train_loss = 694.417527, val_loss = 744.148254
+## epoch : 88/200, train_loss = 692.556106, val_loss = 748.906189
+## epoch : 89/200, train_loss = 691.708858, val_loss = 743.735657
+## epoch : 90/200, train_loss = 690.909590, val_loss = 744.307434
+## epoch : 91/200, train_loss = 690.562610, val_loss = 743.997253
+## epoch : 92/200, train_loss = 690.615977, val_loss = 738.731079
+## epoch : 93/200, train_loss = 690.456373, val_loss = 742.858459
+## epoch : 94/200, train_loss = 688.949212, val_loss = 744.112305
+## epoch : 95/200, train_loss = 687.779655, val_loss = 746.505798
+## epoch : 96/200, train_loss = 689.769118, val_loss = 740.666992
+## epoch : 97/200, train_loss = 684.914547, val_loss = 739.228638
+## epoch : 98/200, train_loss = 686.868607, val_loss = 741.838745
+## epoch : 99/200, train_loss = 686.264665, val_loss = 736.124878
+## epoch : 100/200, train_loss = 689.301786, val_loss = 740.279663
+## epoch : 101/200, train_loss = 685.884564, val_loss = 738.350220
+## epoch : 102/200, train_loss = 682.311036, val_loss = 730.532898
+## epoch : 103/200, train_loss = 682.142098, val_loss = 735.973572
+## epoch : 104/200, train_loss = 680.276018, val_loss = 734.113770
+## epoch : 105/200, train_loss = 680.597185, val_loss = 731.495239
+## epoch : 106/200, train_loss = 677.852523, val_loss = 732.709656
+## epoch : 107/200, train_loss = 678.784551, val_loss = 730.428162
+## epoch : 108/200, train_loss = 677.347737, val_loss = 732.798035
+## epoch : 109/200, train_loss = 679.646143, val_loss = 735.663818
+## epoch : 110/200, train_loss = 678.281540, val_loss = 735.225647
+## epoch : 111/200, train_loss = 676.883676, val_loss = 732.635193
+## epoch : 112/200, train_loss = 675.433577, val_loss = 727.391357
+## epoch : 113/200, train_loss = 675.463282, val_loss = 727.712708
+## epoch : 114/200, train_loss = 674.695549, val_loss = 729.134766
+## epoch : 115/200, train_loss = 675.656630, val_loss = 729.322388
+## epoch : 116/200, train_loss = 673.712118, val_loss = 726.001221
+## epoch : 117/200, train_loss = 672.227749, val_loss = 727.889221
+## epoch : 118/200, train_loss = 672.278468, val_loss = 726.766785
+## epoch : 119/200, train_loss = 671.342809, val_loss = 722.979614
+## epoch : 120/200, train_loss = 672.375740, val_loss = 728.475769
+## epoch : 121/200, train_loss = 669.602622, val_loss = 723.348755
+## epoch : 122/200, train_loss = 668.753669, val_loss = 726.090454
+## epoch : 123/200, train_loss = 672.459741, val_loss = 724.616577
+## epoch : 124/200, train_loss = 670.569222, val_loss = 724.359985
+## epoch : 125/200, train_loss = 667.810933, val_loss = 725.779114
+## epoch : 126/200, train_loss = 671.820855, val_loss = 724.766113
+## epoch : 127/200, train_loss = 667.450265, val_loss = 722.992981
+## epoch : 128/200, train_loss = 665.858176, val_loss = 721.682312
+## epoch : 129/200, train_loss = 667.115404, val_loss = 722.724243
+## epoch : 130/200, train_loss = 668.212998, val_loss = 725.322510
+## epoch : 131/200, train_loss = 666.462920, val_loss = 722.250793
+## epoch : 132/200, train_loss = 665.270434, val_loss = 719.848145
+## epoch : 133/200, train_loss = 665.073984, val_loss = 723.679749
+## epoch : 134/200, train_loss = 662.835925, val_loss = 718.207336
+## epoch : 135/200, train_loss = 665.144891, val_loss = 719.163696
+## epoch : 136/200, train_loss = 664.592641, val_loss = 719.054382
+## epoch : 137/200, train_loss = 663.277457, val_loss = 721.618774
+## epoch : 138/200, train_loss = 667.053863, val_loss = 725.905640
+## epoch : 139/200, train_loss = 665.773196, val_loss = 719.600891
+## epoch : 140/200, train_loss = 661.173000, val_loss = 719.236511
+## epoch : 141/200, train_loss = 660.233650, val_loss = 717.152405
+## epoch : 142/200, train_loss = 659.901179, val_loss = 717.114441
+## epoch : 143/200, train_loss = 660.894878, val_loss = 722.357300
+## epoch : 144/200, train_loss = 661.941422, val_loss = 714.207947
+## epoch : 145/200, train_loss = 658.582326, val_loss = 714.789856
+## epoch : 146/200, train_loss = 659.230680, val_loss = 715.954590
+## epoch : 147/200, train_loss = 657.092729, val_loss = 711.478394
+## epoch : 148/200, train_loss = 657.829020, val_loss = 717.602844
+## epoch : 149/200, train_loss = 659.539298, val_loss = 715.727539
+## epoch : 150/200, train_loss = 660.323406, val_loss = 715.139160
+## epoch : 151/200, train_loss = 658.252193, val_loss = 714.448730
+## epoch : 152/200, train_loss = 654.828674, val_loss = 716.021057
+## epoch : 153/200, train_loss = 656.484906, val_loss = 713.341980
+## epoch : 154/200, train_loss = 657.954640, val_loss = 718.219482
+## epoch : 155/200, train_loss = 656.848609, val_loss = 715.593079
+## epoch : 156/200, train_loss = 654.293212, val_loss = 710.752625
+## epoch : 157/200, train_loss = 653.933752, val_loss = 714.599365
+## epoch : 158/200, train_loss = 655.749784, val_loss = 712.583130
+## epoch : 159/200, train_loss = 654.272627, val_loss = 711.178223
+## epoch : 160/200, train_loss = 654.751445, val_loss = 714.426453
+## epoch : 161/200, train_loss = 652.674999, val_loss = 709.104797
+## epoch : 162/200, train_loss = 653.088928, val_loss = 714.588074
+## epoch : 163/200, train_loss = 655.608907, val_loss = 710.729065
+## epoch : 164/200, train_loss = 652.532759, val_loss = 712.433533
+## epoch : 165/200, train_loss = 654.340439, val_loss = 712.207825
+## epoch : 166/200, train_loss = 656.042144, val_loss = 713.002930
+## epoch : 167/200, train_loss = 650.646656, val_loss = 706.820740
+## epoch : 168/200, train_loss = 650.465594, val_loss = 709.025818
+## epoch : 169/200, train_loss = 651.724602, val_loss = 710.455750
+## epoch : 170/200, train_loss = 651.699281, val_loss = 717.492188
+## epoch : 171/200, train_loss = 653.424629, val_loss = 710.278137
+## epoch : 172/200, train_loss = 651.007032, val_loss = 709.592468
+## epoch : 173/200, train_loss = 651.932408, val_loss = 707.840820
+## epoch : 174/200, train_loss = 649.281388, val_loss = 709.610046
+## epoch : 175/200, train_loss = 649.047119, val_loss = 706.689941
+## epoch : 176/200, train_loss = 649.578429, val_loss = 710.713989
+## epoch : 177/200, train_loss = 647.193937, val_loss = 707.344482
+## epoch : 178/200, train_loss = 648.127226, val_loss = 711.843506
+## epoch : 179/200, train_loss = 649.505013, val_loss = 712.164062
+## epoch : 180/200, train_loss = 650.165781, val_loss = 707.454102
+## epoch : 181/200, train_loss = 646.678162, val_loss = 706.035339
+## epoch : 182/200, train_loss = 650.295144, val_loss = 712.448425
+## epoch : 183/200, train_loss = 648.770577, val_loss = 707.839294
+## epoch : 184/200, train_loss = 646.337278, val_loss = 702.264587
+## epoch : 185/200, train_loss = 647.583706, val_loss = 706.927673
+## epoch : 186/200, train_loss = 647.004365, val_loss = 709.532227
+## epoch : 187/200, train_loss = 645.076641, val_loss = 704.838257
+## epoch : 188/200, train_loss = 646.533917, val_loss = 707.963318
+## epoch : 189/200, train_loss = 648.298170, val_loss = 714.769409
+## epoch : 190/200, train_loss = 647.211879, val_loss = 707.779114
+## epoch : 191/200, train_loss = 647.429537, val_loss = 705.731812
+## epoch : 192/200, train_loss = 643.625797, val_loss = 705.548706
+## epoch : 193/200, train_loss = 645.639876, val_loss = 708.968628
+## epoch : 194/200, train_loss = 648.054089, val_loss = 706.922363
+## epoch : 195/200, train_loss = 643.290630, val_loss = 706.912415
+## epoch : 196/200, train_loss = 643.872342, val_loss = 704.184814
+## epoch : 197/200, train_loss = 645.669399, val_loss = 704.596741
+## epoch : 198/200, train_loss = 643.327865, val_loss = 703.771851
+## epoch : 199/200, train_loss = 643.707339, val_loss = 707.406372
+## epoch : 200/200, train_loss = 643.691908, val_loss = 709.637939</code></pre>
+<p>Let us come back to R! Plot the evolution of the training and validation loss in function of the epochs. Comment on your result. Can you train your network with more epochs? Should you stop the training process before the last epoch?</p>
+<p>Note that one can acces val_losses and train_losses created in the chunck above with <code>py$val_losses</code> and <code>py$train_loss</code>.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#print(py$val_losses)</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print(py$train_losses)</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>losses <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(<span class="dv">1</span><span class="sc">:</span>py<span class="sc">$</span>epochs,py<span class="sc">$</span>val_losses,py<span class="sc">$</span>train_losses))</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(losses) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;epoch&quot;</span>,<span class="st">&quot;validation_loss&quot;</span>,<span class="st">&quot;train_loss&quot;</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co">#print(losses)</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co">#TODO : plot</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> losses, <span class="fu">aes</span>(<span class="at">x =</span> epoch)) <span class="sc">+</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> validation_loss,<span class="at">color =</span> <span class="st">&quot;Validation loss&quot;</span>), ) <span class="sc">+</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> train_loss, <span class="at">color =</span> <span class="st">&quot;Train loss&quot;</span>) ) <span class="sc">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  ggsci<span class="sc">::</span><span class="fu">scale_color_jama</span>() <span class="sc">+</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Train and validation loss in function of the epoch number&quot;</span>,</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Epoch&quot;</span>,</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;MSE Loss&quot;</span>,</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo2_question3b_print_val_train_loss-1.png" width="672" /></p>
+<p>After a run of 200 epochs, the validation and training are still both decreasing: there is no sign of overfitting for now. We can run the model for more epochs.</p>
+<p>By analyzing the behavior of the network on the validation set, we can tune all the hyperparameters of the model: number of epochs, learning rate, batch size, layer shapes, … Please do not do it for this homework as this may be too time-consuming. Indeed, let’s keep the parameters defined above and the weights of the model as it was after the last training you did. It does not matter if it is not perfectly trained for the mark.</p>
+<p>Let us now focus on assessing the algorithm on the test set. First, compute the reconstructed outputs (forward pass through the auto-encoder) for the test set images. Name your table outputs_test. Print the loss on the test set and comment.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute test loss</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>outputs_test <span class="op">=</span> model(X_test_torch)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>test_loss <span class="op">=</span> criterion(outputs_test, X_test_torch)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(test_loss.item())</span></code></pre></div>
+<pre><code>## 708.9092407226562</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>outputs_test <span class="op">=</span> model(X_test_torch).detach().numpy() <span class="co">#To detach the results from gradien graph.</span></span></code></pre></div>
+<p>The MSE loss on the test set is more or less the same as on the training and validation set.</p>
+<p>Next, print the five first original and reconstructed test images by running the code below. Comment on the results.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">2</span>))</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (idx <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    label <span class="ot">&lt;-</span> py<span class="sc">$</span>y_test[idx]</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">image</span>(<span class="fu">matrix.rotate</span>(py<span class="sc">$</span>X_test[idx, ]),</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">col =</span> <span class="fu">grey</span>(<span class="at">level =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="at">by=</span><span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">255</span>)),</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">axes=</span>F,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">main=</span>label)</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">image</span>(<span class="fu">matrix.rotate</span>(py<span class="sc">$</span>outputs_test[idx, ]), <span class="co">#TODO :</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">col =</span> <span class="fu">grey</span>(<span class="at">level =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="at">by=</span><span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">255</span>)),</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">axes=</span>F,</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">main=</span>label)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo2_question3_print_reconstructed_test_images-1.png" width="672" /></p>
+<p>We see that the global shape of each digit is preserved. Yet, the reconstructed images seem to be somehow blurred.</p>
+</div>
+<div id="t-sne-on-embeddings" class="section level3">
+<h3>4) t-SNE on embeddings</h3>
+<p>The goal of this last section is to apply t-SNE to the embeddings we get (dimension : 179) in order to visualize them in 2D.</p>
+<p>First, compute the embeddings of the test set images (pass through the encoder only).</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>embedding_tests <span class="op">=</span> model.encoder(X_test_torch)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>embedding_tests <span class="op">=</span> embedding_tests.detach().numpy() <span class="co">#To detach the results from gradient graph.</span></span></code></pre></div>
+<p>Next, apply t-SNE to the embeddings with t-SNE output dimension 2 and the value of perplexity you want (no need to tune the perplexity).</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>tsne <span class="ot">&lt;-</span> <span class="fu">Rtsne</span>(py<span class="sc">$</span>embedding_tests, <span class="at">dims =</span> <span class="dv">2</span>, <span class="at">perplexity=</span> <span class="dv">30</span>  , <span class="at">verbose=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Finally, print the 2D t-SNE embeddings as <strong>points colored by their true label</strong>. Comment on the results.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(tsne<span class="sc">$</span>Y, <span class="at">label =</span> <span class="fu">factor</span>(py<span class="sc">$</span>y_test)) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> X1, <span class="at">y =</span> X2, <span class="at">color =</span> label)) <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span><span class="st">&quot;t-SNE results representation&quot;</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;True digit&quot;</span>,</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Artificial dataset generated from 3 Gaussian distriubtions&quot;</span>)</span></code></pre></div>
+<p><img src="tutorial_nonlinear_methods_files/figure-html/exo2_question4c_print_tsne-1.png" width="672" /></p>
+<p>The concatenation of the Auto-Encoder and t-SNE manages to more or less separate the classes in a two-dimension space. Indeed, some classes like 1 or 2 lead to quite compact and isolated clusters. Some classes are still mixed: there is a mix between 4 and 9 for instance. We also guess some outliers.</p>
+<p>Through the slides, TD and homework, you should now have a large overview of dimensionality reductions methods (linear and non-linear) that exist. You can have a look at <a href="https://scikit-learn.org/stable/auto_examples/manifold/plot_compare_methods.html#sphx-glr-auto-examples-manifold-plot-compare-methods-py">this page</a> which compares several methods and their execution time for the S-curve problem you have seen during the TD. Among them are Isomap and t-SNE that you used during the Homework.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<<echo = FALSE, message=FALSE>>=
+library(Rtsne)
+@
+
+\begin{frame}{Stochastic Neighbor Embedding (SNE)}
+
+Let $(\bx_1, \hdots, \bx_n)$ be the original points in $\mathbb{R}^p$, and measure similarities by
+
+\[p_{ij} =  (p_{j | {i}} + p_{{i} | j})/ 2n\]
+where
+\begin{align*}
+  p_{j | {i}} & = \frac{ \exp(- \| \bx_j - \bx_{i} \|^2 / 2 \sigma_i^2 ) }{\sum_{k \neq i} \exp(- \| \bx_k - \bx_{i} \|^2 / 2 \sigma_{i}^2)}, \\
+  & = \frac{ \exp(- d_{ij}^2 / 2 \sigma_i^2 ) }{\sum_{k \neq i} \exp(- d_{ki}^2 / 2 \sigma_i^2)}
+\end{align*}
+
+\vfill
+
+\begin{itemize}
+\item[\rsa] SNE preserves relations with \alert{\bf close neighbors} with Gaussian kernels
+\item[\rsa] $\sigma$ smooths the data (linked to the regularity of the target manifold)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{The perplexity parameter}
+
+The variance $\sigma_i^2$ should adjust to local densities (neighborhood of point $i$)
+
+\begin{block}{Perplexity: a smoothed effective number of neighbors}
+The perplexity is defined by
+$$
+  Perp(p_i) = 2^{H(p_i)}, \qquad H(p_i) = -\sum_{j=1}^{n} p_{j|i} \log_2 p_{j|i}
+$$
+where $H$ is the Shannon entropy of $p_i=(p_{1|i},\hdots,p_{n|i})$.\\
+\end{block}
+
+\vfill
+
+\rsa SNE performs a binary search for the value of $\sigma_i$ that produces a $p_i$ with a fixed perplexity that is specified by the user.
+
+\end{frame}
+
+\begin{frame}{tSNE and Student / Cauchy kernels}
+
+Consider $(\tilde\bx_1,\hdots,\tilde\bx_n)$ are points in the low dimensional space $\mathbb{R}^{q=2}$
+
+\begin{itemize}
+\item Consider a similarity between points in the new representation:
+$$q_{i | j} = \frac{ \exp(- \| \tilde\bx_i - \tilde\bx_j \|^2  ) }{\sum_{k \neq i} \exp(- \| \tilde\bx_k - \tilde\bx_j \|^2 )}$$
+\item Robustify this kernel by using Student(1) kernels (ie Cauchy)
+$$q_{i | j} = \frac{ (1 + \| \tilde\bx_i - \tilde\bx_j \|^2)^{-1}  }{\sum_{k \neq i} (1 + \| \tilde\bx_i - \tilde\bx_k \|^2)^{-1}}$$
+\end{itemize}
+\end{frame}
+
+% \begin{frame}{Optimizing tSNE}
+% \begin{itemize}
+% \item Minimize the KL between $p$ and $q$ so that the data representation minimizes:
+% $$
+% C(y) = \sum_{ij} KL(p_{ij},q_{ij})
+% $$
+% \item The cost function is not convex 
+% $$
+% \left[ \frac{\partial C(y)}{\partial y} \right]_i = \sum_{j} (p_{ij}-q_{ij})(y_i - y_j)
+% $$
+% \item Interpreted as the resultant force created by a set of springs between the map point $y_i$ and all other map points $\left( y_j \right)_j$. All springs exert a force along the direction $(y_i - y_j)$.
+% \item $(p_{ij}-q_{ij})$ is viewed as a stiffness of the force exerted by the spring between $y_i$ and $y_j$.
+% \end{itemize}
+% \end{frame}
+
+% \begin{frame}{Customed Gradient descent}
+% \begin{itemize}
+% \item Gradient descent initialized by sampling map points randomly from an isotropic Gaussian with small variance centered around the origin
+% \item Gradient update using
+% $$
+% y^{(t)} = y^{(t-1)} + \eta \frac{\partial C(y)}{\partial y} + \alpha(t) (y^{(t-1)}-y^{(t-2)})
+% $$
+% \item $\eta$ learning rate, $\alpha(t)$ momentum at iteration $t$.
+% \item Gaussian noise is added to the map points to perform simulated annealing.
+% \end{itemize}
+% \end{frame}
+
+\begin{frame}{t-SNE: pros/cons}
+
+\begin{block}{Properties}
+\begin{itemize}
+\item good at preserving local distances (intra-cluster variance)
+\item not so good for global representation (inter-cluster variance)
+\item good at creating clusters of close points, bad at positioning clusters wrt each other
+\end{itemize}
+\end{block}
+
+\begin{block}{Limitations}
+\begin{itemize}
+  \item importance of preprocessing: initialize with PCA and feature selection plus log transform (non linear transform)
+\item percent of explained variance ? interpretation of the $q$ distribution ?
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+  \frametitle{Example on scRNA} 
+
+\paragraph{Run the fit}
+
+<<tSNE scRNA perplexity run>>=
+scRNA_expr <- scRNA %>% dplyr::select(-cell_type) %>% as.matrix()
+
+tSNE_perp2   <- Rtsne(scRNA_expr, perplexity =   2)$Y %>% 
+  as.data.frame() %>% add_column(perplexity = 2) %>% add_column(cell_type = scRNA$cell_type)
+
+tSNE_perp10  <- Rtsne(scRNA_expr, perplexity =  10)$Y %>% 
+  as.data.frame() %>% add_column(perplexity = 10) %>% add_column(cell_type = scRNA$cell_type)
+
+tSNE_perp100 <- Rtsne(scRNA_expr, perplexity = 100)$Y %>% 
+  as.data.frame() %>% add_column(perplexity = 100) %>% add_column(cell_type = scRNA$cell_type)
+@
+
+\paragraph{Compare perplexity}
+
+<<tSNE scRNA perplexity plot, fig.dim=c(10,5), out.width='\\textwidth'>>=
+rbind(tSNE_perp2,tSNE_perp10,tSNE_perp100) %>% 
+  ggplot(aes(x = V1, y = V2, color = cell_type)) +
+     geom_point(size=1.25) +
+     guides(colour = guide_legend(override.aes = list(size=6))) +
+  facet_wrap(.~perplexity, scales = 'free')
+@
+
+\end{frame}
+

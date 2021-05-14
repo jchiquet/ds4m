@@ -1,0 +1,111 @@
+\section{Additional tools and Complements}
+
+\begin{frame}[fragile]
+  \frametitle{Unifying view of variables and individuals}
+
+  \begin{block}{Principal components}
+   The full matrix of principal component connects  individual coordinates to latent factors:
+    \begin{equation*}
+      \mathrm{PC} = \bX^c \bV = \begin{pmatrix}
+      \mathbf{f}_{1} & \mathbf{f}_{2} & \dots & \mathbf{f}_{p}
+      \end{pmatrix}
+      = \begin{pmatrix} 
+      \bc_{1}^\top \\ \bc_{2}^\top \\\dots \\ \bc_{n}^\top 
+      \end{pmatrix}
+    \end{equation*}
+  \end{block}
+
+  \vfill
+  
+  \begin{itemize}
+    \item new variables (latent factor) are seen column-wise
+    \item new coordinates are seen row-wise
+  \end{itemize}
+
+  $\rightsquigarrow$ Everything can be interpreted on a single plot, called the biplot
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Biplot (1)}
+<<biplot1 scRNA untransformed>>=
+  factoextra::fviz_pca_biplot(scRNA_pca,
+    axes = c(1,2), habillage = "cell_type",
+    select.var = list(contrib = 30)
+  )
+@
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Biplot (2)}
+<<biplot2 scRNA untransformed>>=
+  factoextra::fviz_pca_biplot(scRNA_pca,
+    axes = c(2,3), habillage = "cell_type",
+    select.var = list(cos2 = .75)
+  )
+@
+\end{frame}
+
+\begin{frame}
+  \frametitle{Reconstruction formula}
+
+    Recall that $\mathbf{F} = (\mathbf{f}_1, \dots, \mathbf{f}_p) $ is the matrix of Principal components. Then,  
+    \begin{itemize}
+      \item  $\mathbf{f}_k = \bX^c \bv_k$ for projection on axis $k$
+      \item $\mathbf{F} = \bX^c \bV$ for all axis.
+    \end{itemize}
+    Using orthogonality of $\bV$, we get back the original data as follows, without loss ($\bV^T$ performs the inverse rotation of $\bV$):
+    \begin{equation*}
+      \bX^c = \mathbf{F}\bV^\top 
+    \end{equation*}
+
+    \vfill
+
+    We obtain an approximation $\tilde\bX^c$ (compression) of the data $\bX^c$ by considering a subset $\mathcal{S}$ of PC, typically $\mathcal{S} = {1, \dots, q}$ with $q \ll p$.
+    \begin{equation*}
+      \tilde\bX^c = \mathbf{F}_{\mathcal{S}}\bV_{\mathcal{S}}^\top = \bX^c \bV_{\mathcal{S}} \bV_{\mathcal{S}}^\top
+    \end{equation*}
+    $\rightsquigarrow$ This is a rank-$q$ approximation of $\bX$ (information captured by the first $q$ axes).
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Choosing the number of components}
+
+  \begin{columns}
+  \begin{column}{0.68\textwidth}
+    \begin{block}{Various solutions, open question}
+    Scree plot, test on eigenvalues, confidence interval, cross-validation, generalized cross-validation, etc.
+    \end{block}
+  \end{column}~~
+  \begin{column}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{wine_pca_eig}
+  \end{column}
+  \end{columns}
+  
+  \begin{columns}
+  \begin{column}{.5\textwidth}
+  \begin{block}{Objectives}
+    \begin{itemize}
+      \item Interpretation
+      \item Separate structure and noise
+      \item Data compression    
+    \end{itemize}
+  \end{block}
+\end{column}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{dim_reduc.pdf}
+  \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Example: Generalized Cross Validation}
+
+<<crabs gcv>>=
+GCV <- dplyr::select(scRNA, -cell_type) %>% as.matrix() %>% 
+  FactoMineR::estim_ncp(ncp.min = 1, ncp.max = 30) 
+qplot(1:length(GCV$criterion), GCV$criterion, geom = "line", xlab = "number of axis", ylab = "GCV")
+@
+\end{frame}
+

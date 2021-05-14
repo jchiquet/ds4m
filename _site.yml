@@ -1,0 +1,44 @@
+name: "Natixis Certificat for Data Science - Dimension Reduction"
+output_dir: "public"
+output:
+  html_document:
+    theme: yeti
+    highlight: tango
+    css: resources/style.css
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    includes:
+      in_header: resources/hideOutput.script
+mathjax: "http://example.com/MathJax.js"
+exclude: ["slides", "README"]
+navbar:
+  title: "Natixis Certificat for Data Science - Dimension Reduction"
+  left:
+    - text: "github"
+      icon: fa-github
+      href: https://github.com/jchiquet/data_science_HEC
+  right:
+    - text: "Setup"
+      href: instructions.html
+      icon: fas fa-gear
+    - text: "Slides"
+      icon: fas fa-chalkboard-teacher
+      href: OverviewDimensionReduction.pdf
+    - text: "Tutorials"
+      icon: fas fa-laptop
+      menu:
+        - text: "PCA"
+          href: tutorial_PCA.html
+        - text: "tSNE- UMAP, Auto-encoders"
+          href: tutorial_nonlinear_methods.html
+    - text: "Homework"
+      icon: fas fa-keyboard
+      menu:
+        - text: "Data analysis with PCA"
+          href: homework_PCA.html
+        - text: "MDS, Kernel-PCA"
+          href: homework_nonlinear_methods.html
+

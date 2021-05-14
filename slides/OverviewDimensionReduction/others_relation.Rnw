@@ -1,0 +1,82 @@
+<<echo = FALSE, message=FALSE>>=
+library(umap)
+@
+
+\begin{frame}{Multidimensional scaling}
+  \framesubtitle{a.k.a Principale Coordinates Analysis}
+
+  \begin{block}{Problem setup}
+  Consider a collection of points $\bx_i\in\Rset^p$ and assume either 
+  \begin{itemize}
+  \item $D = d_{ii'}$ a $n\times n$ dissimilarity matrix, or
+  \item $S = s_{ii'}$ a $n\times n$ similarity matrix, or
+  \end{itemize}
+  \alert{Goal:} find $\tilde\bx_i\in\Rset^q$ while preserving S/D in the latent space\\
+  \end{block}
+  
+  \rsa Don't need access to the position in $\Rset^p$ (only $D$ or $S$ \rsa 'kernel').
+
+
+  \begin{block}{Classical MDS model}
+    Measure similarities with the (centered) \alert{\bf inner product} and minimize 
+    \begin{equation*}
+      \sum_{i\neq i'} \left( (\bx_i - \bmu)^\top (\bx_i - \bmu) - \tilde\bx_i^\top \tilde\bx_{i'} \right)^2,
+    \end{equation*}
+    assuming a linear model $\tilde\bx =  \bV^\top (\bx_i - \bmu)$, with $\bV \in \mathcal{O}_{p \times q}$.  \end{block}
+
+\end{frame}
+
+\begin{frame}
+   \frametitle{Isomap}
+ 
+   \begin{block}{Basic idea}
+     \begin{itemize}
+       \item Metric  MDS performs embedding based on pairwise Euclidean-based distance
+       \item Isomap embeds a distance induced by a neighborhood graph
+     \end{itemize}
+   \end{block}
+ 
+Formally, consider a neighborhood $\mathcal{N}_i$ for each point, then
+\begin{equation*}
+  d_{ii'} = \left\{
+    \begin{array}{cc}
+    + \infty & \text{ if }j \notin \mathcal{N}_i\\
+    \| \bx_i - \bx_{i'} \|& \\
+    \end{array}
+  \right.,
+\end{equation*}
+ and compute the shortest path distance for each pair prior to MDS.
+ 
+ <<eval = FALSE>>=
+ library(vegan)
+ @
+% 
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+  \frametitle{Uniform Manifold Approximation and Projection}
+
+  \begin{itemize}
+    \item Use another distance based of $k-$neighborhood graph
+    \item  tends to preserve both local and glocal 
+  \end{itemize}
+  
+\paragraph{Run the fit on scRNA}
+
+<<UMAP run>>=
+scRNA_expr <- scRNA %>% dplyr::select(-cell_type) %>% as.matrix()
+umap_fit   <- umap(scRNA_expr)$layout %>% 
+  as.data.frame() %>% add_column(cell_type = scRNA$cell_type)
+@
+
+\paragraph{Visualization}
+
+<<plot, fig.dim=c(8,5), out.width='\\textwidth'>>=
+umap_fit %>% 
+  ggplot(aes(x = V1, y = V2, color = cell_type)) +
+     geom_point(size=1.25) +
+     guides(colour = guide_legend(override.aes = list(size=6)))
+@
+
+\end{frame}
+

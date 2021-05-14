@@ -1,0 +1,258 @@
+
+\begin{frame}
+  \frametitle{Exploratory analysis of (modern) data sets}
+
+  Assume a table with $n$ individuals described by $p$ features/variables
+  
+  \vfill
+  
+  \begin{block}{Questions}
+    Look for \alert{\bf patterns} or \alert{\bf structures} to summarize the data by
+    \begin{itemize}
+      \item Finding \alert{groups} of "similar" individuals
+      \item Finding variables \alert{important} for these data
+      \item Performing \alert{visualization}
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Challenges}
+    \begin{description}
+      \item[Size] data may be \alert{large} (\og big data \og: large $n$ large $p$)    
+      \item[Dimension] data may be \alert{high dimensional} (more variables than individual or $n \ll p$)    
+      \item[Redundancy] many variables may carry the \alert{same information}
+      \item[Unsupervised] we \alert{don't necessary know} what we are looking after
+    \end{description}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Overview of Statistics \& Machine Learning}
+	\framesubtitle{Where is today's course in this big picture?}
+
+	\begin{center}
+		\includegraphics[width=\textwidth]{figures/Learning+Types.jpg}
+	\end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{An example in genetics: 'snp'}
+  \framesubtitle{Genetics variant in European population}
+
+\begin{block}{Description: \textcolor{black}{\it medium/large data, high-dimensional}}
+500, 000 Genetics variants (SNP -- Single Nucleotide Polymorphism) for  3000 individuals
+(1 meter $\times$ 166 meter (height $\times$ width)
+\end{block}
+
+\begin{multicols}{2}
+  \begin{itemize}
+  \item SNP : 90 \% of human genetic variations
+  \item coded as 0, 1 or 2 (10, 1 or 2 allel different against the population reference)
+  \end{itemize}
+
+  \begin{figure}
+    \centering
+     \includegraphics[height=4cm]{SNP}   
+    \caption{SNP (wikipedia)}
+  \end{figure}
+\end{multicols}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Summarize 500,000 variables with 2 features}
+
+  \begin{figure}
+    \centering
+      \includegraphics[height=5.5cm]{geneMirrorGeography}
+    \caption{Dimension reduction + labels {\tiny source: Nature "Gene  Mirror Geography Within  Europe", 2008}}
+  \end{figure}
+
+  In the original messy $3,000 \times 500,000$ table, we may find
+  \begin{itemize}
+    \item an extremely strong structure between individuals (\alert{\bf "clustering"})
+    \item a very simple subspace where it is obvious (\alert{\bf "dimension reduction"})
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[label=DimensionReduction]
+  \frametitle{Dimension reduction: general goals}
+
+  \paragraph{Main objective:} find a \alert{\bf low-dimensional representation} that captures the "essence" of (high-dimensional) data
+
+  \vfill
+
+  \begin{block}{Application in Machine Learning}
+  \alert{Preprocessing, Regularization}
+  \begin{itemize}
+    \item Compression, denoising,  anomaly detection
+    \item Reduce overfitting in supervised learning
+  \end{itemize}
+  \end{block}
+
+\vfill
+
+  \begin{block}{Application in Statistics/Data analysis}
+    \alert{Better understanding of the data}
+    \begin{itemize}
+      \item descriptive/exploratory methods
+      \item visualization (difficult to plot and interpret $> 3D$!)
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dimension reduction: problem setup}
+
+    \begin{block}{Settings}
+      \begin{itemize}
+        \item \alert{Training data} : $\mathcal{D}=\{\bx_1,\ldots,\bx_n\} \in \Rset^p$,   (i.i.d.)
+        \item Space $\Rset^p$ of possibly high dimension $(n \ll p)$
+      \end{itemize}
+    \end{block}
+
+    \vfill
+    
+    \begin{block}{Dimension Reduction Map}
+       Construct a map $\Phi$ from the space $\Rset^{p}$ into a space $\Rset^{q}$ of \alert{smaller dimension}:
+      \begin{align*}
+          \Phi:\quad & \Rset^p \to \Rset^{q}, q \ll p\\
+                     & \bx \mapsto \Phi(\bx)
+      \end{align*}
+    \end{block}
+    
+\end{frame}
+ 
+\begin{frame}
+  \frametitle{How should we design/construct $\Phi$?}
+
+  \paragraph{Criterion}
+  \begin{itemize}
+    \item \alert{\bf Geometrical approach}
+    \item Reconstruction error
+    \item Relationship preservation
+  \end{itemize}
+
+  \vfill
+  
+  \paragraph{Form of the map $\Phi$}
+  \begin{itemize}
+    \item \alert{\bf Linear} or non-linear ?
+    \item tradeoff between \alert{\bf interpretability} and versatility ?
+    \item tradeoff between high or \alert{\bf low} computational resource
+  \end{itemize}
+
+\end{frame}
+ 
+% \begin{frame}
+% \frametitle{Dimension Reduction?}
+% 
+% \begin{figure}
+%   \includegraphics<1>[height=.5\textheight]{belardi-camel-3d-4}
+%   \includegraphics<2>[height=.5\textheight]{belardi-camel-3d-3}
+%   \includegraphics<3>[height=.5\textheight]{belardi-camel-3d-2}
+%   \caption{\tiny source: F. Belardi}
+% \end{figure}
+% 
+% \begin{itemize}
+% \item How to view a high-dimensional dataset ?
+% \item High-dimension: dimension larger than 2!
+% \item \emph{Projection} in a 2D space.
+% \end{itemize}
+% \end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Companion data set: 'scRNA'}
+  \framesubtitle{Subsamples of normalized Single-Cell RNAseq}
+
+\begin{block}{Description: \textcolor{black}{\it subsample of a large data set}}
+\small Gene-level expression of 100 representative genes for a collection of 301 cells 
+spreaded in 11 cell-lines. Original transcription data are measured by counts obtained by 
+\textit{RNAseq} and normalized to be close to a Gaussian distribution.\\
+
+\begin{scriptsize}
+\begin{thebibliography}{9}
+\bibitem{pollen} Pollen, Alex A., et al. \textcolor{black}{Low-coverage single-cell mRNA sequencing reveals cellular heterogeneity and activated signaling pathways in developing cerebral cortex.} \newblock Nature biotechnology 32.10 (2014): 1053.
+\end{thebibliography}
+\end{scriptsize}
+\end{block}
+
+\begin{figure}
+  \includegraphics[width=.9\textwidth]{figures/scRNA-overview}
+  \caption{Single Cell RNA sequencing data: general principle -- {\tiny source: Stephanie Hicks}}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Companion data set: 'scRNA'}
+  \framesubtitle{Brief data summary I}
+
+<<scRNA dataset load>>=
+load("../../data/scRNA.RData")
+scRNA <- as_tibble(t(pollen$data)) %>% add_column(cell_type = pollen$celltypes)
+@
+
+\paragraph{Data table}
+<<scRNA dataset table>>=
+scRNA[, 1:6] %>% head(3) %>% knitr::kable("latex")
+@
+
+\paragraph{Cell types}
+
+<<scRNA dataset celltypes, fig.cap='Natural grouping: cell-types'>>=
+scRNA %>% dplyr::select(cell_type) %>% summary()  %>% knitr::kable()
+@
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Companion data set: 'scRNA'}
+  \framesubtitle{Brief data summary II}
+
+\paragraph{Histogram of normalized expression}
+
+<<scRNA expressions>>=
+scRNA %>% dplyr::select(-cell_type) %>% pivot_longer(everything()) %>% 
+  ggplot() + aes(x = value, fill = name) + geom_histogram(show.legend = FALSE)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Companion data set: 'scRNA'}
+  \framesubtitle{Brief data summary III}
+
+\paragraph{Correlation between gene expression}
+
+<<scRNA-correlation>>=
+scRNA %>% dplyr::select(-cell_type) %>% cor() %>% 
+  corrplot(method = "color", tl.pos = "n", order = "hclust")
+@
+\end{frame}
+
+% \begin{frame}
+% \frametitle{Theoretical argument: dimensionality Curse}
+% 
+% \begin{block}{High Dimension Geometry Curse}
+% \begin{itemize}
+% \item Folks theorem: In high dimension, everyone is alone.
+% \item Theorem: If $\bx_1,\ldots, \bx_n$ in the hypercube of dimension $p$  such that their coordinates are i.i.d then
+% \begin{align*}
+% \mspace{-20mu} p^{-1/2} \left( \max \|\bx_i-\bx_{i'}\|_2 - \min \|\bx_i-\bx_{i'}\|_2 \right)  &= 0 + O\left(\sqrt{\frac{\log n}{p}}\right)\\
+% \frac{\max \|\bx_i-\bx_{i'}\|_2}{\min \|\bx_i-\bx_{i'}\|_2} &= 1 + O\left(\sqrt{\frac{\log n}{p}}\right).
+% \end{align*}
+% \end{itemize}
+% \end{block}
+% 
+%   $\rightsquigarrow$ When $p$ is large, all the points are almost equidistant\\
+% 
+%   Hopefully, the data \alert{\bf are not really leaving in $p$} dimension (think of the SNP example)
+% 
+% \end{frame}

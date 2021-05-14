@@ -1,0 +1,97 @@
+
+\begin{frame}
+  \frametitle{PCA (and linear methods) limitations}
+
+  \begin{block}{Do not account for complex pattern}
+    \begin{itemize}
+      \item Linear methods are powerful for \alert{\bf planar structures}
+      \item May fail at describing \alert{\bf manifolds}
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{Fail at preserving local geometry}
+    \begin{itemize}
+      \item High dimensional data are characterized by \alert{\bf multiscale properties} (local / global structures)
+      \item Non Linear projection helps at preserving \alert{\bf local characteristics} of distances
+    \end{itemize}
+  \end{block}
+
+  \vfill
+  
+   \begin{figure}
+     \includegraphics[scale=0.25]{figures/manifold.pdf}
+     \caption{\small Intuition of manifolds and geometry underlying sc-data -- {\tiny source: F. Picard}}
+   \end{figure}
+
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{PCA (and linear methods) limitations}
+% 
+%   \begin{block}{Do not account for 'complex' data distribution}
+%     \begin{itemize}
+%       \item PCA is tied to a hidden \alert{\bf Gaussian assumption}
+%       \item Fails with \alert{\bf Count data}
+%       \item Fails with \alert{\bf Skew data}
+%     \end{itemize}
+%   \end{block}
+%   
+%   \vfill
+%   
+%   \begin{block}{Possible solutions}
+%     \begin{itemize}
+%       \item Probabilistic (non Gaussian) models
+%       \item Need transformed (non-linear) input space
+%     \end{itemize}
+%   \end{block}
+%   
+%   \end{frame}
+
+\begin{frame}
+  \frametitle{Dimension reduction: revisiting the problem setup}
+
+    \begin{block}{Settings}
+      \begin{itemize}
+        \item \alert{Training data} : $\mathcal{D}=\{\bx_1,\ldots,\bx_n\} \in \Rset^p$,   (i.i.d.)
+        \item Space $\Rset^p$ of possibly high dimension $(n \ll p)$
+      \end{itemize}
+    \end{block}
+
+    \vfill
+    
+    \begin{block}{Dimension Reduction Map}
+       Construct a map $\Phi$ from the space $\Rset^{p}$ into a space $\Rset^{q}$ of \alert{smaller dimension}:
+      \begin{align*}
+          \Phi:\quad & \Rset^p \to \Rset^{q}, q \ll p\\
+                     & \bx \mapsto \Phi(\bx)
+      \end{align*}
+    \end{block}
+    
+\end{frame}
+
+\begin{frame}
+  \frametitle{How should we design/construct $\Phi$?}
+
+  \paragraph{Geometrical approach} (\alert{\bf see slides on PCA})
+  
+  \vfill
+  
+  \paragraph{Idea to go beyond linear approaches}
+  \begin{itemize}
+    \item Modify the model by amending the \alert{\bf reconstruction error}
+    \item Focus on \alert{\bf Relationship preservation}
+  \end{itemize}
+
+  \vfill
+  
+  \paragraph{Form of the map $\Phi$}
+  \begin{itemize}
+    \item  Linear or \alert{\bf non-linear ?}
+    \item tradeoff between  interpretability and \alert{\bf versatility ?}
+    \item tradeoff between  \alert{\bf high} or low computational resource
+  \end{itemize}
+
+\end{frame}
+
+
+

@@ -1,0 +1,96 @@
+\begin{frame}
+  \frametitle{Reconstruction error approach}
+
+  \begin{enumerate}
+    \item  Construct a map $\Phi$ from the space $\Rset^{p}$ into a space $\Rset^{q}$ of \alert{smaller dimension}:
+      \begin{align*}
+      \Phi:\quad & \Rset^{p} \to \Rset^{q}, q \ll p\\
+               & \bx \mapsto \Phi(\bx) = \tilde\bx
+      \end{align*}
+    \item Construct $\tilde{\Phi}$ from $\Rset^{q}$ to $\Rset^{p}$ (\alert{reconstruction formula})
+     \item Control an error $\epsilon$ between $\bx$ and its reconstruction $\hat \bx = \tilde{\Phi}(\Phi(\bx))$
+  \end{enumerate}
+
+\bigskip
+
+\onslide<2>{
+    For instance,  the error measured with the Frobenius between the original data matrix $\bX$ and its approximation:
+      \begin{equation*}
+        \epsilon(\bX, \hat \bX ) = \left\| \bX - \hat \bX \right\|_F^2  = \sum_{i=1}^n \left\| \bx_i - \tilde{\Phi}(\Phi(\bx_i)) \right\|^2 
+      \end{equation*}
+}      
+\end{frame}
+
+\begin{frame}
+\frametitle{Reinterpretation of PCA}
+
+  \begin{block}{PCA model}
+       Let $\bV$ be a $p\times q$ matrix whose columns are of $q$ orthonormal vectors.
+      \begin{align*}
+        \Phi(\bx) & = \bV^\top(\bx-\bmu)  = \tilde\bx \\  
+        \bx \simeq \tilde{\Phi}(\tilde\bx) & = \bmu + \bV \tilde\bx
+      \end{align*}
+      \rsa Model with \alert{\bf Linear assumption + ortho-normality constraints}
+    \end{block}
+
+  \begin{block}{PCA reconstruction error}<2>
+    \vspace{-.25cm}
+    \begin{equation*}
+      \minimize_{\bmu \in\Rset^p, \bV\in\mathcal{O}_{p,q}} \sum_{i=1}^n \left\| (\bx_i  - \bmu) - \bV\bV^\top ( \bx_i -\bmu)   \right\|^2 
+    \end{equation*}
+  
+  \alert{Solution (explicit)} 
+  \begin{itemize}
+  \item $\bmu = \bar{\bx}$ the empirical mean
+  \item $\bV$  an orthonormal basis of the space spanned by the $q$ first eigenvectors of the empirical covariance matrix
+  \end{itemize}
+  
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Important digression: SVD}
+
+  \begin{block}{Singular Value Decomposition (SVD)}
+    The SVD of $\mathbf{M}$ a $n\times p$ matrix is the factorization given by
+    
+    \[ \mathbf{M} =\mathbf{U}\mathbf{D}\mathbf{V}^\top,\]
+    where $r = \min(n,p)$ and
+    \begin{itemize}
+      \item \(\mathbf{D}_{r \times r} = \text{diag}(\delta_1, ...\delta_r)\) is the diagonal matrix of singular values.
+      \item \(\mathbf{U}\) is orthonormal, whose columns are eigen vectors of (\(\mathbf{M}\mathbf{M}^T\))
+      \item \(\mathbf{V}\) is orthonormal whose columns are eigen vectors of (\(\mathbf{M}^T\mathbf{M}\))
+    \end{itemize}
+    {\small \rsa Time complexity in $\mathcal{O}(n p q r)$ (less when $k\ll r$ components are required)}
+  \end{block}
+
+  \vfill
+  
+  \begin{block}{Connection with eigen decomposition of the covariance matrix}<2>
+    \vspace{-.5cm}
+    \begin{align*}
+      \mathbf{M}^\top\mathbf{M} & = \mathbf{V} \mathbf{D} \mathbf{U}^\top  \mathbf{U} \mathbf{D} \mathbf{V}^\top \\
+        & = \mathbf{V} \mathbf{D}^2 \mathbf{V}^\top  = \mathbf{V} \boldsymbol{\Lambda} \mathbf{V}^\top\\
+    \end{align*}
+  \end{block}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{PCA solution is given by SVD of the centered data matrix}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=4cm]{figures/matrix_factorization}
+\end{figure}
+
+Since $\tilde\bX = \mathbf{\bX}^c \bV =  \bU \bD \bV^\top \bV = \bU \bD$, PCA can be rephrased as
+\[ \hat{\mathbf{X}^c} = \mathbf{FV}^\top =  \argmin_{\mathbf{F}\in\mathcal{M}_{n,q},\bV\in\mathcal{O}_{p,q} } \left\| \mathbf{X}^c - \mathbf{FV}^\top \right\|_F^2 \text{ with } \|\mathbf{A}\|_F^2 = \sum_{ij} a_{ij}^2, 
+\]
+\[
+  \left. \tilde\bX \in\Rset^{n\times \textcolor{red}{q}}, \mathbf{V}\in\Rset^{p\times \textcolor{red}{q}} \right\} \ \text{Best linear low-rank representation of $\bX$}
+\]
+
+\end{frame}
+ 
