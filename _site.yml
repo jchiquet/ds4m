@@ -19,7 +19,7 @@ navbar:
   left:
     - text: "github"
       icon: fa-github
-      href: https://github.com/jchiquet/data_science_HEC
+      href: https://github.com/jchiquet/ds4m
   right:
     - text: "Setup"
       href: instructions.html
