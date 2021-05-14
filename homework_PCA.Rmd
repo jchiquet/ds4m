@@ -1,5 +1,5 @@
 ---
-title: 'Homework #3: correction'
+title: 'Homework: PCA'
 subtitle: 'PCA for visualization, compression and exploratory analyses'
 author: 'Julien Chiquet'
 date: "Natixis Certificat for Data Science"

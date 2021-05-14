@@ -25,7 +25,7 @@ $(document).ready(function() {
     $chunks.find(".html-widget").addClass("foldedloc");
 
   // hide all chunks when document is loaded
-  $('.foldedloc').hide()
+  // $('.foldedloc').hide()
 
   // function to toggle the visibility
   $('.showopt').click(function() {
