@@ -412,7 +412,7 @@ div.tocify {
       <ul class="nav navbar-nav">
         <li>
   <a href="https://github.com/jchiquet/ds4m">
-    <span class="fas fa-github"></span>
+    <span class="fa fa fa fa-github"></span>
      
     github
   </a>
@@ -839,9 +839,9 @@ div.tocify {
 <span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], X[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0716264358&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f065166dd30&gt;</code></pre>
 <div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], X[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0716264fd0&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0651691dd8&gt;</code></pre>
 <div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;A nonlinear 2Ddataset&#39;</span>)</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;A nonlinear 2Ddataset&#39;)</code></pre>
 <div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;y coordinate&#39;</span>)</span></code></pre></div>
@@ -867,9 +867,9 @@ div.tocify {
 <span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_spca[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], np.zeros((<span class="dv">50</span>,<span class="dv">1</span>)), color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0658183160&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07161eb668&gt;</code></pre>
 <div class="sourceCode" id="cb58"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_spca[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], np.zeros((<span class="dv">50</span>,<span class="dv">1</span>)), color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f071b6ef518&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0658079e80&gt;</code></pre>
 <div class="sourceCode" id="cb60"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First principal component after Linear PCA&#39;</span>)</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;First principal component after Linear PCA&#39;)</code></pre>
 <div class="sourceCode" id="cb62"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;PC1&#39;</span>)</span></code></pre></div>
@@ -884,9 +884,9 @@ div.tocify {
 <span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb66"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_spca[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], X_spca[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07161f58d0&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f071616fc50&gt;</code></pre>
 <div class="sourceCode" id="cb68"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_spca[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], X_spca[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f071b242400&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0716217080&gt;</code></pre>
 <div class="sourceCode" id="cb70"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First 2 principal component after Linear PCA&#39;</span>)</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;First 2 principal component after Linear PCA&#39;)</code></pre>
 <div class="sourceCode" id="cb72"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;PC1&#39;</span>)</span></code></pre></div>
@@ -913,9 +913,9 @@ div.tocify {
 <span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb78"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_pc[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], np.zeros((<span class="dv">50</span>,<span class="dv">1</span>)), color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0716208ac8&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07161ab160&gt;</code></pre>
 <div class="sourceCode" id="cb80"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_pc[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], np.zeros((<span class="dv">50</span>,<span class="dv">1</span>)), color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07162dd9b0&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07161ab9b0&gt;</code></pre>
 <div class="sourceCode" id="cb82"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First principal components after RBF Kernel PCA with $\gamma$=</span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(gamma))</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;First principal components after RBF Kernel PCA with $\\gamma$=15&#39;)</code></pre>
 <div class="sourceCode" id="cb84"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;PC1&#39;</span>)</span></code></pre></div>
@@ -929,9 +929,9 @@ div.tocify {
 <span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb88"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_pc[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], X_pc[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07161b4b70&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06580b77b8&gt;</code></pre>
 <div class="sourceCode" id="cb90"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_pc[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], X_pc[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07161b4d30&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06518ec2e8&gt;</code></pre>
 <div class="sourceCode" id="cb92"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First 2 principal components after RBF Kernel PCA with $\gamma$=</span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(gamma))</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;First 2 principal components after RBF Kernel PCA with $\\gamma$=15&#39;)</code></pre>
 <div class="sourceCode" id="cb94"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;PC1&#39;</span>)</span></code></pre></div>
@@ -953,9 +953,9 @@ div.tocify {
 <span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb100"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], X[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f071605b550&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f071616f278&gt;</code></pre>
 <div class="sourceCode" id="cb102"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], X[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f071605b6d8&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0716239470&gt;</code></pre>
 <div class="sourceCode" id="cb104"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Concentric circles&#39;</span>)</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;Concentric circles&#39;)</code></pre>
 <div class="sourceCode" id="cb106"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;y coordinate&#39;</span>)</span></code></pre></div>
@@ -981,9 +981,9 @@ div.tocify {
 <span id="cb111-12"><a href="#cb111-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb112"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], np.zeros((<span class="dv">500</span>,<span class="dv">1</span>))<span class="op">+</span><span class="fl">0.1</span>, color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f071618b6a0&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06516f2da0&gt;</code></pre>
 <div class="sourceCode" id="cb114"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], np.zeros((<span class="dv">500</span>,<span class="dv">1</span>))<span class="op">-</span><span class="fl">0.1</span>, color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07161b7da0&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06516f2400&gt;</code></pre>
 <div class="sourceCode" id="cb116"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="op">-</span><span class="dv">15</span>,<span class="dv">15</span>])</span></code></pre></div>
 <pre><code>## (-15.0, 15.0)</code></pre>
 <div class="sourceCode" id="cb118"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First principal component after Linear PCA&#39;</span>)</span></code></pre></div>
@@ -998,9 +998,9 @@ div.tocify {
 <span id="cb123-4"><a href="#cb123-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb124"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], X[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07160f7f60&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06516b9b70&gt;</code></pre>
 <div class="sourceCode" id="cb126"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], X[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f071611ac88&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06516b9630&gt;</code></pre>
 <div class="sourceCode" id="cb128"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="op">-</span><span class="dv">15</span>,<span class="dv">15</span>])</span></code></pre></div>
 <pre><code>## (-15.0, 15.0)</code></pre>
 <div class="sourceCode" id="cb130"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First 2 principal component after Linear PCA&#39;</span>)</span></code></pre></div>
@@ -1019,9 +1019,9 @@ div.tocify {
 <span id="cb137-4"><a href="#cb137-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb138"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_pc[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], np.zeros((<span class="dv">500</span>,<span class="dv">1</span>)), color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0651829da0&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0651692208&gt;</code></pre>
 <div class="sourceCode" id="cb140"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_pc[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], np.zeros((<span class="dv">500</span>,<span class="dv">1</span>)), color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0651829198&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f0651692588&gt;</code></pre>
 <div class="sourceCode" id="cb142"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First principal components after RBF Kernel PCA with $\gamma$=</span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(gamma))</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;First principal components after RBF Kernel PCA with $\\gamma$=15&#39;)</code></pre>
 <div class="sourceCode" id="cb144"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;PC1&#39;</span>)</span></code></pre></div>
@@ -1036,9 +1036,9 @@ div.tocify {
 <span id="cb147-4"><a href="#cb147-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb148"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_pc[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">0</span>], X_pc[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;red&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f065185c668&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06518ec4e0&gt;</code></pre>
 <div class="sourceCode" id="cb150"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_pc[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">0</span>], X_pc[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f065803a128&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06518ec320&gt;</code></pre>
 <div class="sourceCode" id="cb152"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First 2 principal components after RBF Kernel PCA with $\gamma$=</span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(gamma))</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;First 2 principal components after RBF Kernel PCA with $\\gamma$=15&#39;)</code></pre>
 <div class="sourceCode" id="cb154"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;PC1&#39;</span>)</span></code></pre></div>
@@ -1060,7 +1060,7 @@ div.tocify {
 <span id="cb159-7"><a href="#cb159-7" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">7</span>))</span>
 <span id="cb159-8"><a href="#cb159-8" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">&#39;3d&#39;</span>)</span>
 <span id="cb159-9"><a href="#cb159-9" aria-hidden="true" tabindex="-1"></a>ax.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], X[:, <span class="dv">2</span>], c<span class="op">=</span>color, cmap<span class="op">=</span>plt.cm.rainbow)</span></code></pre></div>
-<pre><code>## &lt;mpl_toolkits.mplot3d.art3d.Path3DCollection object at 0x7f065803a940&gt;</code></pre>
+<pre><code>## &lt;mpl_toolkits.mplot3d.art3d.Path3DCollection object at 0x7f0715da5710&gt;</code></pre>
 <div class="sourceCode" id="cb161"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb161-1"><a href="#cb161-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Swiss Roll in 3D&#39;</span>)</span></code></pre></div>
 <pre><code>## Text(0.5, 0.92, &#39;Swiss Roll in 3D&#39;)</code></pre>
 <div class="sourceCode" id="cb163"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
@@ -1080,7 +1080,7 @@ div.tocify {
 <span id="cb164-10"><a href="#cb164-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb165"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb165-1"><a href="#cb165-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_pc[:, <span class="dv">0</span>], X_pc[:, <span class="dv">1</span>], c<span class="op">=</span>color, cmap<span class="op">=</span>plt.cm.rainbow)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06581304e0&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f065171de10&gt;</code></pre>
 <div class="sourceCode" id="cb167"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First 2 principal components after RBF Kernel PCA with $\gamma$=</span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(gamma))</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;First 2 principal components after RBF Kernel PCA with $\\gamma$=0.05&#39;)</code></pre>
 <div class="sourceCode" id="cb169"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb169-1"><a href="#cb169-1" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;PC1&#39;</span>)</span></code></pre></div>
@@ -1112,7 +1112,7 @@ div.tocify {
 <span id="cb174-13"><a href="#cb174-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb175"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb175-1"><a href="#cb175-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_lle, np.zeros((<span class="dv">800</span>,<span class="dv">1</span>)), c<span class="op">=</span>color, cmap<span class="op">=</span>plt.cm.rainbow)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07162b57f0&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f07162a60b8&gt;</code></pre>
 <div class="sourceCode" id="cb177"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First principal component after Locally Linear Embedding&#39;</span>)</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;First principal component after Locally Linear Embedding&#39;)</code></pre>
 <div class="sourceCode" id="cb179"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
@@ -1124,7 +1124,7 @@ div.tocify {
 <span id="cb180-3"><a href="#cb180-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span></code></pre></div>
 
 <div class="sourceCode" id="cb181"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_lle[:,<span class="dv">0</span>], X_lle[:,<span class="dv">1</span>], c<span class="op">=</span>color, cmap<span class="op">=</span>plt.cm.rainbow)</span></code></pre></div>
-<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06517ebf98&gt;</code></pre>
+<pre><code>## &lt;matplotlib.collections.PathCollection object at 0x7f06518cf3c8&gt;</code></pre>
 <div class="sourceCode" id="cb183"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb183-1"><a href="#cb183-1" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;First 2 principal component after Locally Linear Embedding&#39;</span>)</span></code></pre></div>
 <pre><code>## Text(0.5, 1.0, &#39;First 2 principal component after Locally Linear Embedding&#39;)</code></pre>
 <div class="sourceCode" id="cb185"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb185-1"><a href="#cb185-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>

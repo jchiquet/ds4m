@@ -1,10 +1,11 @@
 ---
-title: "Introduction to Dimension Reduction"
+title: "Natixis Certificate for Data Science"
+subtitle: "Dimensionality Reduction: an overview"
 ---
 
 9:40-16:40, May 11, 2020.
 
-The goal of this day is to give an introduction to fundamental methods in dimension reduction. 
+The goal of this day is to give an introduction to fundamental methods in dimensionality reduction. 
 
 In the morning, we will focus on linear method and principal component analysis. In the afternoon, we will give an overview of non-linear extension to PCA, such as kernel-PCA, t-SNE and auto-encoder.
 

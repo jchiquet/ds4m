@@ -1,4 +1,4 @@
-name: "Natixis Certificat for Data Science - Dimension Reduction"
+name: "DS4M - Dimensionality Reduction"
 output_dir: "docs"
 output:
   html_document:
@@ -18,7 +18,7 @@ navbar:
   title: "Natixis Certificat for Data Science - Dimension Reduction"
   left:
     - text: "github"
-      icon: fa-github
+      icon: fa fa-github
       href: https://github.com/jchiquet/ds4m
   right:
     - text: "Setup"
