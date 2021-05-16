@@ -134,7 +134,7 @@
 
   \paragraph{Criterion}
   \begin{itemize}
-    \item \alert{\bf Geometrical approach}
+    \item Geometrical approach
     \item Reconstruction error
     \item Relationship preservation
   \end{itemize}
@@ -143,9 +143,9 @@
   
   \paragraph{Form of the map $\Phi$}
   \begin{itemize}
-    \item \alert{\bf Linear} or non-linear ?
-    \item tradeoff between \alert{\bf interpretability} and versatility ?
-    \item tradeoff between high or \alert{\bf low} computational resource
+    \item Linear or non-linear ?
+    \item tradeoff between interpretability and versatility ?
+    \item tradeoff between high or low computational resource
   \end{itemize}
 
 \end{frame}

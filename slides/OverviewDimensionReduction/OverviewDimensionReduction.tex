@@ -293,7 +293,7 @@
 
   \paragraph{Criterion}
   \begin{itemize}
-    \item \alert{\bf Geometrical approach}
+    \item Geometrical approach
     \item Reconstruction error
     \item Relationship preservation
   \end{itemize}
@@ -302,9 +302,9 @@
   
   \paragraph{Form of the map $\Phi$}
   \begin{itemize}
-    \item \alert{\bf Linear} or non-linear ?
-    \item tradeoff between \alert{\bf interpretability} and versatility ?
-    \item tradeoff between high or \alert{\bf low} computational resource
+    \item Linear or non-linear ?
+    \item tradeoff between interpretability and versatility ?
+    \item tradeoff between high or low computational resource
   \end{itemize}
 
 \end{frame}
@@ -1088,9 +1088,9 @@ Dim.1 & Dim.2 & Dim.3 & Dim.4 & Dim.5\\
   \end{block}
 
   \begin{block}{Principal component}
-    It is the linear combinasion formed by the orginal variables with weights given by the loadings $\bv_k = (u_{k1}, \dots, u_{kj}, \dots, u_{kp})$
+    It is the linear combinasion formed by the orginal variables with weights given by the loadings $\bv_k = (v_{k1}, \dots, v_{kj}, \dots, v_{kp})$
     \begin{equation*}
-      \mathbf{f}_{k}  = \sum_{j=1}^p u_{kj} (\bx^{j} - \bar{x}_j) = \bX^c \bv_k, \quad \mathbf{f}_k \in \Rset^n
+      \mathbf{f}_{k}  = \sum_{j=1}^p v_{kj} (\bx^{j} - \bar{x}_j) = \bX^c \bv_k, \quad \mathbf{f}_k \in \Rset^n
     \end{equation*}
     Sometimes called \alert{"factors"} in  factor analysis, as \alert{latent (hidden) variables}. 
   \end{block}
@@ -1109,15 +1109,15 @@ Dim.1 & Dim.2 & Dim.3 & Dim.4 & Dim.5\\
   \end{block}
 
   \begin{equation*}
-    \var(\mathbf{f}_k) = \frac{1}{n}\var(\bX^c \bv_k) = \bv_k^\top \frac{1}{n}(\bX^c)^\top \bX^c \bv_k =  \bv_k^\top \hat{\bSigma} \bv_k = \lambda_k
+    \var(\mathbf{f}_k) = \bv_k^\top \frac{1}{n}(\bX^c)^\top \bX^c \bv_k =  \bv_k^\top \hat{\bSigma} \bv_k = \lambda_k
   \end{equation*}
   
   \begin{equation*}
-    \cov(\mathbf{f}_k, (\bx^j - \bar{x}_j)) = \bv_k \top {\bX^c}^\top \bX^c e_j = \bv_k \lambda_k e_j = \lambda_k \bv_{kj}   
+    \cov(\mathbf{f}_k, (\bx^j - \bar{x}_j)) = \frac{1}{n}\bv_k \top {\bX^c}^\top \bX^c e_j =  \lambda_k \bv_k^\top e_j = \lambda_k \, v_{kj}   
   \end{equation*}
 
   \begin{equation*}
-    \cor(\mathbf{f}_k, (\bx^j - \bar{x}_j)) =  \sqrt{\frac{\lambda_k}{\var(\bx^j)}}\bv_{kj}
+    \cor(\mathbf{f}_k, (\bx^j - \bar{x}_j)) =  \sqrt{\frac{\lambda_k}{\var(\bx^j)}} v_{kj}
   \end{equation*}
   
 \end{frame}
@@ -1496,6 +1496,7 @@ PLAUR & 1.2027298 & 0.1123865 & 0.5920691 & 0.7637293 & 0.6094841\\
     \end{equation*}
 
     \vfill
+    \pause
 
     We obtain an approximation $\tilde\bX^c$ (compression) of the data $\bX^c$ by considering a subset $\mathcal{S}$ of PC, typically $\mathcal{S} = {1, \dots, q}$ with $q \ll p$.
     \begin{equation*}
@@ -1802,9 +1803,9 @@ Since $\tilde\bX = \mathbf{\bX}^c \bV =  \bU \bD \bV^\top \bV = \bU \bD$, PCA ca
   \frametitle{Kernel-PCA}
 
   \begin{block}{Kernel PCA Model}
-    Assume a non linear transformation $ \Psi(\mathbf{x}_i) \text{ where } \Psi : \mathbb{R}^p \to \mathbb{R}^n$,  then perform linear PCA, with $\bU$ a \alert{\bf $n\times q$} orthonormal matrix
+    Assume a non linear transformation $ \Psi(\mathbf{x}_i) \text{ where } \Psi : \mathbb{R}^p \to \mathbb{R}^n$,  then perform linear PCA, with $\bV$ a \alert{\bf $n\times q$} orthonormal matrix
     \[
-      \Phi(\bx) = \bU^\top \Psi(\bx-\bmu) = \tilde\bx
+      \Phi(\bx) = \bV^\top \Psi(\bx-\bmu) = \tilde\bx
     \]
   \end{block}
 
@@ -1816,7 +1817,7 @@ Since $\tilde\bX = \mathbf{\bX}^c \bV =  \bU \bD \bV^\top \bV = \bU \bD$, PCA ca
   \begin{block}{Solution}
     Eigen-decomposition of the doubly centered kernel matrix $\mathbf{K} = k(\bx_i, \bx_{i'})$ 
     \[\tilde{\mathbf{K}} = 
-    (\bI - \mathbf{1}\mathbf{1}^\top/n) \mathbf{K} (\bI - \mathbf{1}\mathbf{1}^\top/n) = \bU {\boldsymbol\Lambda} \bU^\top \]
+    (\bI - \mathbf{1}\mathbf{1}^\top/n) \mathbf{K} (\bI - \mathbf{1}\mathbf{1}^\top/n) = \bV {\boldsymbol\Lambda} \bV^\top \]
   \end{block}
 
 \end{frame}
@@ -1829,7 +1830,7 @@ Since $\tilde\bX = \mathbf{\bX}^c \bV =  \bU \bD \bV^\top \bV = \bU \bD$, PCA ca
 \begin{block}{Some common kernels}
 
 \begin{itemize}
-\item \alert{\bf Polynormial Kernel }
+\item \alert{\bf Polynomial Kernel }
 
 \[ k(\bx_i,\bx_{i'}) = (\bx_{i}^\top \bx_{i'} + c)^d \]
 

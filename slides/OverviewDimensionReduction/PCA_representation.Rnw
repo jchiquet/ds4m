@@ -171,9 +171,9 @@ factoextra::get_pca_ind(scRNA_pca)$contr %>% head(3) %>% kable("latex")
   \end{block}
 
   \begin{block}{Principal component}
-    It is the linear combinasion formed by the orginal variables with weights given by the loadings $\bv_k = (u_{k1}, \dots, u_{kj}, \dots, u_{kp})$
+    It is the linear combinasion formed by the orginal variables with weights given by the loadings $\bv_k = (v_{k1}, \dots, v_{kj}, \dots, v_{kp})$
     \begin{equation*}
-      \mathbf{f}_{k}  = \sum_{j=1}^p u_{kj} (\bx^{j} - \bar{x}_j) = \bX^c \bv_k, \quad \mathbf{f}_k \in \Rset^n
+      \mathbf{f}_{k}  = \sum_{j=1}^p v_{kj} (\bx^{j} - \bar{x}_j) = \bX^c \bv_k, \quad \mathbf{f}_k \in \Rset^n
     \end{equation*}
     Sometimes called \alert{"factors"} in  factor analysis, as \alert{latent (hidden) variables}. 
   \end{block}
@@ -192,15 +192,15 @@ factoextra::get_pca_ind(scRNA_pca)$contr %>% head(3) %>% kable("latex")
   \end{block}
 
   \begin{equation*}
-    \var(\mathbf{f}_k) = \frac{1}{n}\var(\bX^c \bv_k) = \bv_k^\top \frac{1}{n}(\bX^c)^\top \bX^c \bv_k =  \bv_k^\top \hat{\bSigma} \bv_k = \lambda_k
+    \var(\mathbf{f}_k) = \bv_k^\top \frac{1}{n}(\bX^c)^\top \bX^c \bv_k =  \bv_k^\top \hat{\bSigma} \bv_k = \lambda_k
   \end{equation*}
   
   \begin{equation*}
-    \cov(\mathbf{f}_k, (\bx^j - \bar{x}_j)) = \bv_k \top {\bX^c}^\top \bX^c e_j = \bv_k \lambda_k e_j = \lambda_k \bv_{kj}   
+    \cov(\mathbf{f}_k, (\bx^j - \bar{x}_j)) = \frac{1}{n}\bv_k \top {\bX^c}^\top \bX^c e_j =  \lambda_k \bv_k^\top e_j = \lambda_k \, v_{kj}   
   \end{equation*}
 
   \begin{equation*}
-    \cor(\mathbf{f}_k, (\bx^j - \bar{x}_j)) =  \sqrt{\frac{\lambda_k}{\var(\bx^j)}}\bv_{kj}
+    \cor(\mathbf{f}_k, (\bx^j - \bar{x}_j)) =  \sqrt{\frac{\lambda_k}{\var(\bx^j)}} v_{kj}
   \end{equation*}
   
 \end{frame}

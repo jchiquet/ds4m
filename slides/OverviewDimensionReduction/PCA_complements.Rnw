@@ -60,6 +60,7 @@
     \end{equation*}
 
     \vfill
+    \pause
 
     We obtain an approximation $\tilde\bX^c$ (compression) of the data $\bX^c$ by considering a subset $\mathcal{S}$ of PC, typically $\mathcal{S} = {1, \dots, q}$ with $q \ll p$.
     \begin{equation*}
