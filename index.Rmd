@@ -3,7 +3,7 @@ title: "Natixis Certificate for Data Science"
 subtitle: "Dimensionality Reduction: an overview"
 ---
 
-9:40-16:40, May 11, 2020.
+9:40-16:40, May 17, 2020.
 
 The goal of this day is to give an introduction to fundamental methods in dimensionality reduction. 
 
